@@ -1,0 +1,74 @@
+{
+  "prologue.intro": [
+    { "speaker": "TOPSIDE", "text": "Morning. Welcome aboard the Tåsi. We're moored over the reef on Guam's west coast." },
+    { "speaker": "TOPSIDE", "text": "Quick brief. Three weeks ago our trench lander, ECHO-7, stopped transmitting from the bottom of the Mariana Trench." },
+    { "speaker": "TOPSIDE", "text": "This expedition surveys every zone on the way back down to it. Today you start at the top: the reef, and the wall below it." },
+    { "speaker": "TOPSIDE", "text": "Your gear's on the bench, starboard side. Run your checks." }
+  ],
+  "prologue.gauge": [
+    { "speaker": "TOPSIDE", "text": "Two hundred bar. A full cylinder." }
+  ],
+  "prologue.purge": [
+    { "speaker": "TOPSIDE", "text": "Regulator breathes clean. You've got two second stages on that H-valve — the yellow one is your backup." }
+  ],
+  "prologue.bcdIn": [
+    { "speaker": "TOPSIDE", "text": "Jacket holds air. Now dump it." }
+  ],
+  "prologue.bcdOut": [
+    { "speaker": "TOPSIDE", "text": "Good. Inflates and deflates." }
+  ],
+  "prologue.mask": [
+    { "speaker": "TOPSIDE", "text": "Mask on. Head to the dive platform on the starboard quarter." }
+  ],
+  "prologue.platform": [
+    { "speaker": "TOPSIDE", "text": "Sit on the edge, one hand on your mask, and roll back when you're ready." }
+  ],
+  "prologue.entry": [
+    { "speaker": "TOPSIDE", "text": "Diver in the water. Take a moment." },
+    { "speaker": "TOPSIDE", "text": "When you're ready, head down to the reef. Watch your ascent rate on the wrist computer." }
+  ],
+
+  "reef.shrimp": [
+    { "speaker": "TOPSIDE", "text": "Hear that crackle? Snapping shrimp. Each snap is a collapsing bubble from a single claw. It's the sound of a healthy reef." }
+  ],
+  "reef.scanTutorial": [
+    { "speaker": "TOPSIDE", "text": "Hold your view on an animal to identify it. Press E to scan it into your field journal." }
+  ],
+  "reef.journal": [
+    { "speaker": "TOPSIDE", "text": "Logged. Press J any time to open the journal." }
+  ],
+  "reef.colour": [
+    { "speaker": "TOPSIDE", "text": "Notice the colours fading as you go deeper? Water absorbs red light first. Your torch is on F — it brings the colour back up close." }
+  ],
+  "reef.cleaning": [
+    { "speaker": "TOPSIDE", "text": "That coral head is a cleaning station. Mantas come in to have parasites picked off by small cleaner wrasse. Stay low and keep still." }
+  ],
+  "reef.manta": [
+    { "speaker": "TOPSIDE", "text": "Manta on the station. Don't chase it. Let it come to you." }
+  ],
+  "reef.ghostnet.start": [
+    { "speaker": "TOPSIDE", "text": "You've stopped moving. Talk to me — are you snagged?" },
+    { "speaker": "TOPSIDE", "text": "That's monofilament round your fins. Don't thrash, it tightens. Hold E for your knife and cut the strands." }
+  ],
+  "reef.ghostnet.panic": [
+    { "speaker": "TOPSIDE", "text": "Easy. Slow your breathing. Knife, then cut." }
+  ],
+  "reef.ghostnet.done": [
+    { "speaker": "TOPSIDE", "text": "You're clear. That was ghost gear — lost or dumped fishing line that keeps catching animals long after it's abandoned." }
+  ],
+  "reef.toWall": [
+    { "speaker": "TOPSIDE", "text": "Nice work. Follow the slope south to the drop-off. The wall and the wreck are below it." }
+  ],
+  "reef.lowNdl": [
+    { "speaker": "TOPSIDE", "text": "Keep an eye on your no-decompression time. We've planned stops for the deep part, but don't burn it here." }
+  ],
+  "diver.fastAscent": [
+    { "speaker": "TOPSIDE", "text": "Slow your ascent. Nine metres a minute or less." }
+  ],
+  "diver.lowAir": [
+    { "speaker": "TOPSIDE", "text": "Your gas is getting low. Start thinking about the way up." }
+  ],
+  "diver.outOfAir": [
+    { "speaker": "TOPSIDE", "text": "You're out of gas! Stay calm — switching you to the safety diver's alternate. We'll bring you back to the line." }
+  ]
+}

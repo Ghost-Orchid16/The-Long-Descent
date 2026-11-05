@@ -219,7 +219,9 @@ export class PostFX {
     this.water.uniforms.get('uClock').value = this.clock;
     this.final.uniforms.get('uSeed').value = (this.clock * 60) % 1000;
     const lu = this.lens.uniforms;
-    lu.get('uDistort').value = this.reducedMotion ? 0 : -0.05;
+    const glass = this.glassAmount ?? 1;
+    lu.get('uDistort').value = this.reducedMotion ? 0 : -0.05 * glass;
+    lu.get('uCA').value = 0.0055 * glass;
     this.vol.enabledShafts = env.above ? 0 : env.type.godrays;
     this.composer.render(dt);
   }

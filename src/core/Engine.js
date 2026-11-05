@@ -152,7 +152,8 @@ export class Engine {
 
   async warmup(object = this.scene) {
     try {
-      if (this.renderer.compileAsync) await this.renderer.compileAsync(object, this.camera, this.scene);
+      const par = this.renderer.extensions.has('KHR_parallel_shader_compile');
+      if (par && this.renderer.compileAsync) await this.renderer.compileAsync(object, this.camera, this.scene);
       else this.renderer.compile(object, this.camera, this.scene);
     } catch (e) {
       // compileAsync can reject if a material is disposed during compile; a normal render will compile it.

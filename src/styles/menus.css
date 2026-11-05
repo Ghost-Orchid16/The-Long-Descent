@@ -1,0 +1,20 @@
+.menu { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: flex-start; padding-left: 9vw;
+  background: linear-gradient(90deg, rgba(2, 8, 12, 0.82) 0%, rgba(2, 8, 12, 0.35) 55%, rgba(2, 8, 12, 0) 100%); opacity: 0; pointer-events: none; transition: opacity 0.8s ease; }
+.menu.show { opacity: 1; pointer-events: auto; }
+.menu .inner { max-width: 520px; }
+.menu h1 { font-weight: 200; font-size: clamp(36px, 5.2vw, 68px); letter-spacing: 0.06em; margin: 0 0 8px; color: var(--ink); }
+.menu .tag { font-size: 13px; letter-spacing: 0.08em; color: var(--ink-dim); margin-bottom: 44px; line-height: 1.6; }
+.menu .k { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.menu .btns { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.menu button { background: none; border: none; color: var(--ink); font: inherit; font-size: 16px; font-weight: 300; letter-spacing: 0.06em; padding: 8px 0;
+  cursor: pointer; opacity: 0.78; transition: opacity 0.2s, padding 0.2s; text-align: left; }
+.menu button:hover, .menu button:focus-visible { opacity: 1; padding-left: 8px; outline: none; }
+.menu button:disabled { opacity: 0.25; cursor: default; padding-left: 0; }
+.menu .foot { position: absolute; left: 9vw; bottom: 5vh; font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; line-height: 1.7; }
+.menu .note { margin-top: 26px; font-size: 12px; color: var(--warn); max-width: 380px; line-height: 1.5; }
+.loading { position: fixed; inset: 0; z-index: 30; background: #010407; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.9s; }
+.loading.hide { opacity: 0; pointer-events: none; }
+.loading .t { font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--ink-dim); }
+.loading .bar { width: 220px; height: 1px; background: rgba(232,241,245,0.15); margin-top: 18px; }
+.loading .bar i { display: block; height: 100%; width: 0; background: var(--ink); transition: width 0.3s; }
+.loading .fact { margin-top: 34px; max-width: 520px; text-align: center; font-size: 13px; line-height: 1.6; color: var(--ink-dim); padding: 0 24px; }
