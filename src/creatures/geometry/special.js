@@ -43,14 +43,14 @@ export function buildTurtle({ length = 1.0, hawksbill = false } = {}) {
   m.tube([[0, 0, L * 0.42], [0, L * 0.01, L * 0.56], [0, L * 0.02, L * 0.64]], [hr * 0.85, hr * 0.9, hr * 0.8], 10, (k, u) => ({ t: -0.05 - u * 0.1, l: 0, h: 0, part: PART.EXTRA }));
   m.sphere(0, L * 0.025, L * 0.68, hr, { t: -0.18, l: 0, h: 0, part: PART.EXTRA }, { sx: 0.9, sy: 0.8, sz: hawksbill ? 1.5 : 1.2 });
   for (const s of [-1, 1]) m.sphere(s * hr * 0.75, L * 0.05, L * 0.71, hr * 0.18, { t: -0.2, l: s, h: 0.5, part: PART.EYE }, { ws: 8, hs: 5 });
-  // flippers: long fore flippers, short hind flippers (flat paddles, two-sided)
+  // flippers: long, broad fore flippers; short rounded hind flippers (flat paddles, two-sided)
   for (const s of [-1, 1]) {
-    const root = [s * L * 0.3, -L * 0.03, L * 0.25];
-    const fore = [root, [s * L * 0.62, -L * 0.06, L * 0.12], [s * L * 0.78, -L * 0.08, -L * 0.05], [s * L * 0.6, -L * 0.06, -L * 0.02], [s * L * 0.3, -L * 0.04, L * 0.12]];
-    m.flat(fore, V(0, 1, 0), (q) => ({ t: 0.2, l: s * (Math.abs(q[0]) / (L * 0.78)), h: 0, part: PART.PECTORAL }));
-    const hroot = [s * L * 0.22, -L * 0.04, -L * 0.3];
-    const hind = [hroot, [s * L * 0.38, -L * 0.05, -L * 0.36], [s * L * 0.36, -L * 0.05, -L * 0.48], [s * L * 0.18, -L * 0.04, -L * 0.4]];
-    m.flat(hind, V(0, 1, 0), (q) => ({ t: 0.8, l: s * (Math.abs(q[0]) / (L * 0.38)), h: 0, part: PART.PELVIC }));
+    const F = (x, z) => [s * L * x, -L * (0.03 + 0.05 * Math.max(0, x - 0.28)), L * z];
+    const fore = [F(0.27, 0.27), F(0.47, 0.25), F(0.66, 0.17), F(0.82, 0.03), F(0.88, -0.07), F(0.78, -0.06), F(0.6, 0.02), F(0.42, 0.09), F(0.28, 0.12)];
+    m.flat(fore, V(0, 1, 0), (q) => ({ t: 0.2, l: s * Math.max(0, (Math.abs(q[0]) - L * 0.27) / (L * 0.61)), h: 0, part: PART.PECTORAL, u: (Math.abs(q[0]) / L - 0.27) / 0.61, v: q[2] / L }));
+    const H2 = (x, z) => [s * L * x, -L * 0.045, L * z];
+    const hind = [H2(0.18, -0.3), H2(0.3, -0.31), H2(0.38, -0.37), H2(0.37, -0.45), H2(0.29, -0.47), H2(0.19, -0.4)];
+    m.flat(hind, V(0, 1, 0), (q) => ({ t: 0.8, l: s * Math.max(0, (Math.abs(q[0]) - L * 0.18) / (L * 0.2)), h: 0, part: PART.PELVIC, u: (Math.abs(q[0]) / L - 0.18) / 0.2, v: q[2] / L }));
   }
   return m.build();
 }
@@ -336,7 +336,7 @@ export function buildBivalve({ length = 0.3, kind = 'clam' } = {}) {
       const bulge = Math.sin(v * Math.PI * 0.5) * L * (clam ? 0.16 : 0.12) * Math.cos(a * 0.8);
       const flute = clam ? Math.max(0, Math.cos(u * Math.PI * 6)) * v * v * L * 0.03 : 0;
       return [x, s * (bulge + flute), z - (clam ? 0 : L * 0.25), v, u * 2 - 1, s, PART.SHELL];
-    }, { flip: s < 0 });
+    }, { flip: s > 0 });
   }
   if (clam) {
     // mantle lips visible between the gaping valves
@@ -436,7 +436,7 @@ export function buildGlassSponge({ height = 0.4 } = {}) {
     const a = u * Math.PI * 2;
     const r = H * (0.06 + 0.1 * Math.sin(v * Math.PI * 0.9));
     return [Math.cos(a) * r, H * 0.55 + v * H * 0.45, Math.sin(a) * r, v, Math.cos(a), Math.sin(a), PART.BODY];
-  }, { closeU: true });
+  }, { closeU: true, flip: true });
   for (let k = 0; k < 7; k++) {
     const a = (k / 7) * Math.PI * 2, o = H * 0.012;
     m.tube([[Math.cos(a) * o, 0, Math.sin(a) * o], [Math.cos(a) * o * 0.6, H * 0.3, Math.sin(a) * o * 0.6], [0, H * 0.6, 0]], [H * 0.006, H * 0.005, H * 0.004], 3, (j, u) => ({ t: 1 - u, l: 0, h: u, part: PART.SPINE }));

@@ -19,6 +19,8 @@ const KEYMAP = {
   skip: ['Enter', 'NumpadEnter', 'Tab'],
   alt: ['KeyQ'],
   shutter: ['Enter', 'NumpadEnter'],
+  evUp: ['BracketRight', 'Equal', 'NumpadAdd'],
+  evDown: ['BracketLeft', 'Minus', 'NumpadSubtract'],
 };
 
 // Standard gamepad mapping

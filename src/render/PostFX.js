@@ -212,7 +212,7 @@ export class PostFX {
 
   render(dt, env) {
     this.clock += dt;
-    const ex = env.exposure;
+    const ex = env.exposure * Math.pow(2, this.photoEV || 0);
     this.grade.uniforms.get('uExposure').value = ex;
     this.grade.uniforms.get('uWhite').value.copy(env.whiteBalance);
     this.bloom.luminanceMaterial.threshold = this.bloomBaseThreshold / Math.max(ex, 0.05);

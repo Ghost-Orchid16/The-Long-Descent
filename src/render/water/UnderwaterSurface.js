@@ -70,10 +70,15 @@ export class UnderwaterSurface {
           vec2 r1 = texture2D(tRipple, vW.xz * 0.09 + uWTime * vec2(0.011, 0.019)).xy * 2.0 - 1.0;
           vec2 r2 = texture2D(tRipple, vW.xz * 0.23 - uWTime * vec2(0.021, 0.009)).xy * 2.0 - 1.0;
           vec2 rip = (r1 + r2 * 0.6) * 0.045;
-          // distant surface looks calmer (normal filtering)
+          // normal filtering by pixel footprint: at grazing angles one pixel covers many wavelets,
+          // so the slopes average out (prevents the striped moire beyond Snell's window)
           float dist = length(vW - cameraPosition);
           float far = clamp(dist / 90.0, 0.0, 1.0);
-          vec3 n = normalize(vec3(-(g.x + rip.x) * (1.0 - far * 0.7), 1.0, -(g.y + rip.y) * (1.0 - far * 0.7)));
+          float fp = max(length(dFdx(vW.xz)), length(dFdy(vW.xz)));
+          float kW = (1.0 - far * 0.7) / (1.0 + fp * 0.9);
+          float kR = (1.0 - far * 0.7) / (1.0 + fp * 5.0);
+          vec2 sl = g * kW + rip * kR;
+          vec3 n = normalize(vec3(-sl.x, 1.0, -sl.y));
           vec3 Nb = -n;
           float cosi = clamp(dot(V, n), 0.0, 1.0);
           float F = fresnelWA(cosi);

@@ -125,7 +125,20 @@ export class CMesh {
     this.uv.push(...o.uv); this.b.push(...o.b);
     for (const i of o.i) this.i.push(i + base);
   }
+  /** Make every triangle's winding agree with its vertex normals (front face = normal side). */
+  fixWinding() {
+    const P = this.p, N = this.n, I = this.i;
+    for (let k = 0; k < I.length; k += 3) {
+      const a = I[k] * 3, b = I[k + 1] * 3, c = I[k + 2] * 3;
+      const e1x = P[b] - P[a], e1y = P[b + 1] - P[a + 1], e1z = P[b + 2] - P[a + 2];
+      const e2x = P[c] - P[a], e2y = P[c + 1] - P[a + 1], e2z = P[c + 2] - P[a + 2];
+      const fx = e1y * e2z - e1z * e2y, fy = e1z * e2x - e1x * e2z, fz = e1x * e2y - e1y * e2x;
+      const nx = N[a] + N[b] + N[c], ny = N[a + 1] + N[b + 1] + N[c + 1], nz = N[a + 2] + N[b + 2] + N[c + 2];
+      if (fx * nx + fy * ny + fz * nz < 0) { const t = I[k + 1]; I[k + 1] = I[k + 2]; I[k + 2] = t; }
+    }
+  }
   build() {
+    this.fixWinding();
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(this.p, 3));
     g.setAttribute('normal', new THREE.Float32BufferAttribute(this.n, 3));
@@ -179,7 +192,7 @@ export function buildBody(P) {
       const rn = rows[s][(r + 1) % (rad + 1)], rp = rows[s][(r - 1 + rad + 1) % (rad + 1)];
       tmpA.set(sn[0] - sp[0], sn[1] - sp[1], sn[2] - sp[2]);
       tmpB.set(rn[0] - rp[0], rn[1] - rp[1], rn[2] - rp[2]);
-      nrm.crossVectors(tmpB, tmpA).normalize();
+      nrm.crossVectors(tmpA, tmpB).normalize();
       if (!(nrm.lengthSq() > 0.5)) nrm.set(q[3], q[4], 0).normalize();
       m.v(q[0], q[1], q[2], nrm.x, nrm.y, nrm.z, q[5], r / rad, q[5], q[3], q[4], PART.BODY);
     }
@@ -236,16 +249,36 @@ export function buildBody(P) {
   median(P.dorsal, PART.DORSAL, true);
   median(P.anal, PART.ANAL, false);
   // ---- paired fins
+  // roll 0: base runs vertically (bony-fish pectorals); roll 1: base runs along the body (shark/ray "wings").
+  // fan: number of rays -> scalloped fan of rays (lionfish), uv.x across the fan, uv.y base->rim.
   const paired = (f, part) => {
     if (!f) return;
+    const roll = f.roll ?? 0;
     for (const s of [-1, 1]) {
-      const t = f.t, yb = C(t) + (f.h ?? 0) * H(t) / 2, xb = s * W(t) / 2 * 0.92;
+      const t = f.t, yb = C(t) + (f.h ?? 0) * H(t) / 2, xb = s * W(t) / 2 * 0.92, zb = zOf(t);
       const len = f.len * L, w = f.w * L;
       const ang = f.angle ?? 0.5, up = f.up ?? -0.25;
       const dir = new THREE.Vector3(s * Math.sin(ang), up, -Math.cos(ang)).normalize();
-      const p0 = [xb, yb + w / 2, zOf(t)], p1 = [xb, yb - w / 2, zOf(t) + w * 0.2];
-      const tip = [xb + dir.x * len, yb + dir.y * len, zOf(t) + dir.z * len];
-      const tip2 = [xb + dir.x * len * 0.8, yb + dir.y * len * 0.8 - w * 0.4, zOf(t) + dir.z * len * 0.85];
+      const bv = new THREE.Vector3(0, -1, 0.2).lerp(new THREE.Vector3(0, 0, 1), roll).normalize();
+      const at = (base, d, k) => [base[0] + d.x * k, base[1] + d.y * k, base[2] + d.z * k];
+      const c0 = [xb, yb, zb];
+      const p0 = at(c0, bv, -w / 2), p1 = at(c0, bv, w / 2);
+      if (f.fan) {
+        const n = f.fan * 2, rowA = [], rowB = [];
+        const spread = f.spread ?? 1.6;
+        for (let k = 0; k <= n; k++) {
+          const u = k / n;
+          const d = dir.clone().addScaledVector(bv, (u - 0.5) * spread).normalize();
+          const ray = k % 2 === 0;
+          const r = len * (ray ? 1 : 0.74) * (1 - 0.35 * Math.pow(Math.abs(u - 0.35) * 1.6, 2));
+          rowA.push(at(p0, bv, u * w));
+          rowB.push(at(at(p0, bv, u * w), d, r));
+        }
+        m.strip(rowA, rowB, (q, k, side) => ({ t, l: s * (1 + side), h: f.h ?? 0, part, u: k / n }));
+        continue;
+      }
+      const tip = at(c0, dir, len);
+      const tip2 = at(at(c0, dir, len * 0.8), bv, w * 0.4);
       const nrm2 = new THREE.Vector3().crossVectors(new THREE.Vector3(tip[0] - p0[0], tip[1] - p0[1], tip[2] - p0[2]), new THREE.Vector3(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]));
       if (nrm2.lengthSq() < 1e-14) nrm2.set(s, 0, 0);
       nrm2.normalize();

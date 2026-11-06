@@ -18,6 +18,12 @@ export function modelLength(id) {
   return a.length ?? 1;
 }
 
+/** Geometry only (journal silhouettes, previews). */
+export function buildSpeciesGeometry(id) {
+  const a = APPEARANCE[id];
+  return a ? buildGeometry(a) : null;
+}
+
 function buildGeometry(a) {
   switch (a.gen) {
     case 'body': {

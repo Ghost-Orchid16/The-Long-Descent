@@ -9,6 +9,9 @@ import { Interactions } from './Interactions.js';
 import { CollisionWorld } from '../world/Collision.js';
 import { STAGES, STAGE_META } from './stages/index.js';
 import { nextFrame } from './Stage.js';
+import { Scanner } from './Scanner.js';
+import { PhotoMode } from './PhotoMode.js';
+import { Journal } from '../ui/SpeciesUI.js';
 import dialogue from '../data/dialogue.json';
 
 /** Top-level game: owns systems, runs the loop, and moves between stages. */
@@ -19,6 +22,12 @@ export class Game {
     this.input = new Input(engine.renderer.domElement);
     this.ui = new UI(this);
     this.interactions = new Interactions(this);
+    this.scanner = new Scanner(this);
+    this.journal = new Journal(this);
+    this.photo = new PhotoMode(this);
+    this.journalEnabled = true;
+    this.photoEnabled = true;
+    this.simSteps = Math.max(1, Math.min(60, Number(params.get('sim') || 1)));
     this.collision = new CollisionWorld();
     this.audio = audio;
     this.save = loadSave() || emptySave();
@@ -77,6 +86,11 @@ export class Game {
     this.ui.setObjectives('', []);
     this.timers.length = 0;
     this.interactions.clear();
+    this.scanner.clear();
+    this.scanner.enabled = false;
+    this.ui.species.closeCard();
+    this.journal.hide();
+    this.photo.exit();
     if (card) this.ui.card(...card);
     if (prev) { prev.exit(); }
     if (this.player && !keepPlayer) { this.player.dispose?.(); this.player = null; }
@@ -136,9 +150,33 @@ export class Game {
     if (this.params.get('fixed')) dt = 1 / 60;
     const input = this.input;
     input.update(dt);
-    input.wantLock = this.state === 'playing' && !this.modal;
+    input.wantLock = this.state === 'playing' && (!this.modal || this.modal === 'photo');
     const playing = this.state === 'playing' && !this.modal;
-    if (playing) {
+    if (this.state === 'playing' && this.modal === 'journal' && (input.pressed('journal') || input.pressed('pause'))) this.journal.hide();
+    else if (playing && input.pressed('journal') && this.journalEnabled) { this.journal.show(); }
+    else if (playing && input.pressed('photo') && this.photoEnabled) { this.photo.enter(); input.endFrame(); }
+    // ?sim=N (dev): run N logic steps per rendered frame so headless tests cover real durations
+    const steps = playing && !this.modal ? this.simSteps : 1;
+    for (let k = 0; k < steps && this.state === 'playing' && !this.modal; k++) {
+      this._tick(dt, input);
+      if (k === 0) input.pressedSet.clear(), input.mouse.leftPressed = false, input.mouse.rightPressed = false;
+    }
+    if (!(playing && !this.modal) && (this.state === 'title' || this.state === 'loading')) {
+      this.stage?.update(dt);
+    }
+    if (this.modal === 'photo') this.photo?.update(dt);
+    bus.emit('frame', dt);
+    this.ui.update(dt);
+    this._applyFx(dt);
+    const frozen = this.state === 'paused' || this.modal === 'photo' || this.modal === 'journal';
+    this.engine.update(frozen ? 0 : dt);
+    audio.updateListener(this.engine.camera);
+    this.engine.render(frozen ? 0 : dt);
+    input.endFrame();
+  }
+
+  _tick(dt, input) {
+    {
       if (input.pressed('pause')) this.pause();
       this.time += dt;
       this.save.stats.playTime += dt;
@@ -149,20 +187,11 @@ export class Game {
       }
       this.player?.update(dt);
       this.interactions.update(dt);
+      this.scanner.update(dt);
       this.stage?.update(dt);
       for (const fn of this.updaters) fn(dt);
       if (this.player && this.player.depth !== undefined) this.save.stats.maxDepth = Math.max(this.save.stats.maxDepth, Math.round(this.player.depth));
-    } else if (this.state === 'title' || this.state === 'loading') {
-      this.stage?.update(dt);
     }
-    if (this.modal === 'photo') this.photo?.update(dt);
-    bus.emit('frame', dt);
-    this.ui.update(dt);
-    this._applyFx(dt);
-    this.engine.update(this.state === 'paused' ? 0 : dt);
-    audio.updateListener(this.engine.camera);
-    this.engine.render(this.state === 'paused' ? 0 : dt);
-    input.endFrame();
   }
 
   _applyFx(dt) {

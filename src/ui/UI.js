@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import '../styles/ui.css';
 import { settings } from '../core/Settings.js';
 import { bus } from '../core/Bus.js';
+import { SpeciesUI } from './SpeciesUI.js';
 
 const el = (tag, cls, parent, html) => {
   const e = document.createElement(tag);
@@ -29,6 +30,7 @@ export class UI {
     this.markerEl = el('div', 'wmarker hidden', this.layer);
     this.transitEl = el('div', 'transit', this.layer, '<div class="z"></div><div class="d tabnum"></div>');
     this.inspectEl = el('div', 'inspect', this.layer);
+    this.species = new SpeciesUI(this);
 
     // scuba HUD
     this.scuba = el('div', 'hud-layer hidden', this.layer);
@@ -198,7 +200,7 @@ export class UI {
   }
 
   // ----- world marker for the active objective -----
-  setMarker(pos, label = '') { this.marker = pos ? { pos, label } : null; if (!pos) this.markerEl.classList.add('hidden'); }
+  setMarker(pos, label = '', { minDist = 3 } = {}) { this.marker = pos ? { pos, label, minDist } : null; if (!pos) this.markerEl.classList.add('hidden'); }
   _updateMarker() {
     if (!this.marker || !settings.get('markers')) { this.markerEl.classList.add('hidden'); return; }
     const cam = this.game.engine.camera;
@@ -212,7 +214,7 @@ export class UI {
     const dist = cam.position.distanceTo(p);
     this.markerEl.textContent = '';
     this.markerEl.append(`${this.marker.label ? this.marker.label + ' · ' : ''}${dist.toFixed(0)} m`);
-    this.markerEl.classList.toggle('hidden', dist < 3);
+    this.markerEl.classList.toggle('hidden', dist < this.marker.minDist);
   }
 
   // ----- fades & title cards -----
@@ -244,5 +246,6 @@ export class UI {
   update(dt) {
     this._updateRadio(dt);
     this._updateMarker();
+    this.species.update(dt);
   }
 }

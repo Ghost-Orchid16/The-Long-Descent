@@ -105,6 +105,21 @@ vec3 worleyP(vec2 uv, int per, float jitter) {
 }
 
 // Non-tiling 3D Worley (F1).
+// F1 and F2 (distances to the two nearest feature points); F2 - F1 gives cell borders.
+vec2 worley3e(vec3 x) {
+  ivec3 i = ivec3(floor(x));
+  vec3 f = fract(x);
+  float f1 = 8.0, f2 = 8.0;
+  for (int z = -1; z <= 1; z++)
+  for (int y = -1; y <= 1; y++)
+  for (int xx = -1; xx <= 1; xx++) {
+    ivec3 c = i + ivec3(xx, y, z);
+    vec3 o = vec3(xx, y, z) + hHash33(c) - f;
+    float d = dot(o, o);
+    if (d < f1) { f2 = f1; f1 = d; } else if (d < f2) f2 = d;
+  }
+  return sqrt(vec2(f1, f2));
+}
 float worley3(vec3 x) {
   ivec3 i = ivec3(floor(x));
   vec3 f = fract(x);

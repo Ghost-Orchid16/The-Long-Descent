@@ -15,8 +15,8 @@ const shark = (o) => ({
     caudal: { type: 'hetero', len: o.caudalLen ?? 0.21, span: o.caudalSpan ?? 0.27 },
     dorsal: o.dorsal || [{ t0: 0.3, t1: 0.45, h: 0.12, sweep: 0.7, skew: 0.42 }, { t0: 0.73, t1: 0.79, h: 0.035, sweep: 0.6, skew: 0.5 }],
     anal: o.anal || [{ t0: 0.74, t1: 0.8, h: 0.03, sweep: 0.5, skew: 0.5 }],
-    pectoral: o.pectoral || { t: 0.24, h: -0.45, len: 0.2, w: 0.085, angle: 1.05, up: -0.32 },
-    pelvic: { t: 0.6, h: -0.8, len: 0.06, w: 0.03, angle: 0.8, up: -0.4 },
+    pectoral: o.pectoral || { t: 0.24, h: -0.45, len: 0.2, w: 0.085, angle: 1.05, up: -0.32, roll: 1 },
+    pelvic: { t: 0.6, h: -0.8, len: 0.06, w: 0.035, angle: 0.8, up: -0.4, roll: 1 },
     eye: { t: 0.075, up: 0.15, out: 0.92, r: 0.0085 },
   },
 });
@@ -27,39 +27,46 @@ export const APPEARANCE = {
   // ------------------------------------------------------------------------------------- reef
   green_turtle: {
     gen: 'turtle', params: { length: 1.0 }, swim: SWIM.TURTLE, freq: 0.32, rough: 0.55, wrap: 0.25,
-    colors: ['#5a4a2c', '#8c6c34', '#241a10', '#6a6a52', '#cdbd8e', '#d8d0ac'],
+    colors: ['#5e4c2a', '#9a7a3e', '#2a2012', '#4a4a38', '#d8c890', '#e2dcc0'],
     pattern: `
       if (isPart(0.0) > 0.5) {
-        float rad = gnoise(vec3(atan(lp.x, lp.z) * 6.0, length(lp.xz) * 18.0, 1.0)) * 0.5 + 0.5;
-        col = mix(uC0, uC1, rad * 0.7);
-        float cell = worley3(vec3(lp.x * 4.0, 2.0, lp.z * 3.2));
-        col = mix(col, uC2, smoothstep(0.06, 0.0, cell - 0.38) * 0.5);
-        col *= 0.75 + 0.35 * smoothstep(0.0, 0.5, cell);
+        vec2 sd; float hue0;
+        col = turtleScutes(lp, sd, hue0);
+        float ang = atan(sd.y, sd.x);
+        float streak = gnoise(vec3(ang * 2.6, length(sd) * 1.5, hue0 * 17.0)) * 0.5 + 0.5;
+        float seam = smoothstep(0.8, 0.97, max(abs(sd.x), abs(sd.y)));
+        col = mix(uC0, uC1, smoothstep(0.35, 0.85, streak) * 0.85);
+        col = mix(col, uC2, smoothstep(0.55, 0.9, gnoise(vec3(ang * 4.0, length(sd) * 3.0, hue0 * 5.0)) * 0.5 + 0.5) * 0.5);
+        col = mix(col, uC2 * 0.8, seam * 0.6);
+        col = mix(col, uC4 * 0.8, smoothstep(0.93, 1.0, max(abs(sd.x), abs(sd.y))) * 0.35);
         col = mix(uC4, col, smoothstep(-0.55, -0.25, ht));
         rough = 0.45;
       } else {
-        float sc = worley3(lp * 38.0);
-        col = mix(uC5, uC3 * 0.55, smoothstep(0.12, 0.35, sc));
-        rough = 0.7;
+        vec2 w = worley3e(lp * vec3(30.0, 30.0, 24.0));
+        col = mix(uC5, uC3 * (0.8 + 0.4 * fract(w.x * 7.0)), smoothstep(0.015, 0.055, w.y - w.x));
+        rough = 0.65;
       }
     `,
   },
   hawksbill: {
     gen: 'turtle', params: { length: 0.8, hawksbill: true }, swim: SWIM.TURTLE, freq: 0.38, rough: 0.4,
-    colors: ['#7a4c1c', '#c89646', '#2e1a0c', '#5a4a34', '#d8c898', '#d0c090'],
+    colors: ['#8a5420', '#d6a050', '#2c180a', '#5e4c34', '#e0d0a0', '#dccaa0'],
     pattern: `
       if (isPart(0.0) > 0.5) {
-        float n = gnoise(vec3(lp.x * 7.0, lp.z * 5.0, 2.0)) * 0.5 + 0.5;
-        float streak = gnoise(vec3(atan(lp.x, lp.z + 0.2) * 9.0, length(lp.xz) * 6.0, 4.0)) * 0.5 + 0.5;
-        col = mix(uC2, uC1, smoothstep(0.35, 0.75, n * 0.6 + streak * 0.5));
-        col = mix(col, uC0, 0.35);
-        float cell = worley3(vec3(lp.x * 3.6, 5.0, lp.z * 3.0));
-        col *= 0.7 + 0.4 * smoothstep(0.0, 0.45, cell);
+        vec2 sd; float hue0;
+        col = turtleScutes(lp, sd, hue0);
+        float ang = atan(sd.y, sd.x);
+        float streak = gnoise(vec3(ang * 3.2, length(sd) * 2.2, hue0 * 13.0)) * 0.5 + 0.5;
+        float blot = gnoise(vec3(sd * 1.8, hue0 * 9.0)) * 0.5 + 0.5;
+        col = mix(uC1, uC0, smoothstep(0.4, 0.7, streak));
+        col = mix(col, uC2, smoothstep(0.5, 0.75, blot * 0.6 + streak * 0.5) * 0.85);
+        // overlapping (imbricate) scutes: darker trailing edge of each plate
+        col = mix(col, uC2, smoothstep(0.7, 0.98, -sd.y) * 0.6);
         col = mix(uC4, col, smoothstep(-0.55, -0.25, ht));
-        rough = 0.32;
+        rough = 0.3;
       } else {
-        float sc = worley3(lp * 34.0);
-        col = mix(uC5, uC3 * 0.5, smoothstep(0.12, 0.33, sc));
+        vec2 w = worley3e(lp * vec3(30.0, 30.0, 24.0));
+        col = mix(uC5, uC3 * (0.6 + 0.4 * fract(w.x * 7.0)), smoothstep(0.015, 0.055, w.y - w.x));
       }
     `,
   },
@@ -138,15 +145,15 @@ export const APPEARANCE = {
     amp: 0.07, freq: 1.1,
     body: {
       length: 1.2, seg: 28, rad: 16, exponent: 2.2,
-      height: [[0, 0.12], [0.05, 0.3], [0.15, 0.43], [0.4, 0.42], [0.75, 0.24], [1, 0.1]],
-      width: [[0, 0.1], [0.15, 0.2], [0.4, 0.22], [0.8, 0.1], [1, 0.05]],
-      center: [[0, 0.0], [0.08, 0.05], [0.3, 0.02], [1, 0]],
+      height: [[0, 0.14], [0.025, 0.34], [0.09, 0.47], [0.4, 0.43], [0.75, 0.25], [1, 0.1]],
+      width: [[0, 0.1], [0.06, 0.17], [0.4, 0.22], [0.8, 0.1], [1, 0.05]],
+      center: [[0, -0.07], [0.025, -0.01], [0.08, 0.04], [0.25, 0.015], [1, 0]],
       caudal: { type: 'truncate', len: 0.16, span: 0.3 },
       dorsal: [{ t0: 0.25, t1: 0.82, h: 0.08, sweep: 0.2 }], anal: [{ t0: 0.6, t1: 0.82, h: 0.07, sweep: 0.2 }],
       pectoral: { t: 0.3, h: -0.1, len: 0.11, w: 0.06, angle: 0.5 }, pelvic: { t: 0.36, h: -0.85, len: 0.07, w: 0.03, angle: 0.4 },
       eye: { t: 0.12, up: 0.0, r: 0.012 },
     },
-    colors: ['#4f5e52', '#7c8c7c', '#d8cfb2', '#2a3430', '#5f6f62', '#9aa89a'],
+    colors: ['#5d6c5e', '#a4b29c', '#dcd6bc', '#2e3834', '#66766a', '#9aa89a'],
     pattern: `
       float sc = worley3(lp * 26.0);
       col = mix(uC0, uC1, smoothstep(0.08, 0.0, t) * 0.7 + smoothstep(0.3, 0.0, t) * smoothstep(0.2, 0.8, ht) * 0.3);
@@ -160,9 +167,9 @@ export const APPEARANCE = {
     amp: 0.06, freq: 1.0,
     body: {
       length: 1.4, seg: 28, rad: 16, exponent: 2.2,
-      height: [[0, 0.1], [0.06, 0.24], [0.2, 0.36], [0.45, 0.38], [0.8, 0.2], [1, 0.12]],
-      width: [[0, 0.08], [0.2, 0.17], [0.45, 0.18], [0.85, 0.08], [1, 0.05]],
-      center: [[0, -0.02], [0.15, 0.03], [0.4, 0.01], [1, 0]],
+      height: [[0, 0.11], [0.05, 0.25], [0.15, 0.39], [0.45, 0.38], [0.8, 0.2], [1, 0.12]],
+      width: [[0, 0.09], [0.2, 0.17], [0.45, 0.18], [0.85, 0.08], [1, 0.05]],
+      center: [[0, -0.045], [0.06, 0.0], [0.15, 0.04], [0.4, 0.01], [1, 0]],
       caudal: { type: 'round', len: 0.17, span: 0.32 },
       dorsal: [{ t0: 0.22, t1: 0.84, h: 0.09, sweep: 0.25 }], anal: [{ t0: 0.6, t1: 0.86, h: 0.09, sweep: 0.3 }],
       pectoral: { t: 0.3, h: -0.1, len: 0.12, w: 0.07, angle: 0.5 }, pelvic: { t: 0.34, h: -0.85, len: 0.08, w: 0.03 },
@@ -236,8 +243,8 @@ export const APPEARANCE = {
       height: [[0, 0.1], [0.12, 0.24], [0.35, 0.29], [0.7, 0.2], [0.92, 0.09], [1, 0.07]],
       width: [[0, 0.08], [0.3, 0.16], [0.7, 0.1], [1, 0.04]],
       caudal: { type: 'round', len: 0.2, span: 0.26 },
-      dorsal: [{ t0: 0.62, t1: 0.86, h: 0.12, sweep: 0.2 }], anal: [{ t0: 0.62, t1: 0.82, h: 0.1, sweep: 0.3 }],
-      pectoral: { t: 0.28, h: -0.2, len: 0.48, w: 0.3, angle: 1.0, up: -0.15 },
+      dorsal: [{ t0: 0.16, t1: 0.58, h: 0.1, sweep: 0.3, skew: 0.5 }, { t0: 0.62, t1: 0.86, h: 0.12, sweep: 0.2 }], anal: [{ t0: 0.62, t1: 0.82, h: 0.1, sweep: 0.3 }],
+      pectoral: { t: 0.3, h: -0.2, len: 0.5, w: 0.13, angle: 0.95, up: -0.12, fan: 9, spread: 1.9 },
       pelvic: { t: 0.32, h: -0.85, len: 0.2, w: 0.06, angle: 0.4 },
       spines: [0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54].map((t, i) => ({ t, len: 0.32 - i * 0.02, r: 0.006, lean: 0.35 })),
       eye: { t: 0.1, up: 0.35, r: 0.03 },
@@ -248,7 +255,13 @@ export const APPEARANCE = {
       col = mix(uC0, uC1, smoothstep(-0.2, 0.25, st));
       float fine = sin(t * 150.0) ;
       col = mix(col, uC2, smoothstep(0.7, 0.95, fine) * 0.4);
-      if (isPart(3.0) > 0.5 || isPart(4.0) > 0.5) { float r = sin(vCUv.y * 30.0 + vCUv.x * 4.0); float sp = sin(vCUv.x * 28.0); col = mix(uC3, uC1, smoothstep(0.3, 0.8, r * sp)); }
+      if (isPart(3.0) > 0.5) {
+        float ray = smoothstep(0.55, 1.0, cos(vCUv.x * 6.2831853 * 9.0));
+        float bands = smoothstep(-0.25, 0.25, sin(vCUv.y * 26.0 + vCUv.x * 3.0));
+        col = mix(uC3, uC1, bands * 0.85);
+        col = mix(col, uC4, ray * 0.55 * bands);
+      }
+      if (isPart(4.0) > 0.5) col = mix(uC3, uC1, smoothstep(-0.2, 0.2, sin(vCUv.y * 9.0)));
       if (isPart(7.0) > 0.5) col = mix(uC3, uC1, step(0.5, fract(ht * 6.0)));
       if (isPart(1.0) > 0.5 || isPart(2.0) > 0.5 || isPart(5.0) > 0.5) col = mix(uC3, uC1, spotsW(vec3(vCUv * 6.0, 0.0), 2.0, 0.3));
       rough = 0.5;
@@ -478,7 +491,7 @@ export const APPEARANCE = {
       width: [[0, 0.06], [0.05, 0.13], [0.3, 0.15], [0.6, 0.1], [1, 0.02]],
       dorsal: [{ t0: 0.62, t1: 0.68, h: 0.045, sweep: 0.6, skew: 0.45 }],
       caudalLen: 0.3, caudalSpan: 0.22,
-      pectoral: { t: 0.24, h: -0.5, len: 0.12, w: 0.07, angle: 0.95, up: -0.3 },
+      pectoral: { t: 0.24, h: -0.5, len: 0.12, w: 0.07, angle: 0.95, up: -0.3, roll: 1 },
     }),
     freq: 0.35, amp: 0.06,
     colors: ['#3a3632', '#6a645c', '#1a1816', '#8a8278', '#2a2622', '#4e4a44'],

@@ -209,6 +209,24 @@ export class AudioEngine {
       const g2 = oc.createGain(); g2.gain.value = 0.015;
       o.connect(g).connect(oc.destination); o2.connect(g2).connect(g); o.start(0); o2.start(0); o.stop(1.3); o2.stop(1.3);
     }, 1);
+    B.lock = await offline(0.12, (oc) => {
+      const o = oc.createOscillator(); o.type = 'sine'; o.frequency.value = 1760;
+      const g = oc.createGain(); g.gain.setValueAtTime(0, 0); g.gain.linearRampToValueAtTime(0.05, 0.004); g.gain.exponentialRampToValueAtTime(0.0005, 0.09);
+      o.connect(g).connect(oc.destination); o.start(0); o.stop(0.1);
+    }, 1);
+    B.scanFail = await offline(0.4, (oc) => {
+      const o = oc.createOscillator(); o.type = 'triangle'; o.frequency.setValueAtTime(700, 0); o.frequency.exponentialRampToValueAtTime(260, 0.3);
+      const g = oc.createGain(); g.gain.setValueAtTime(0.05, 0); g.gain.exponentialRampToValueAtTime(0.0005, 0.35);
+      o.connect(g).connect(oc.destination); o.start(0); o.stop(0.38);
+    }, 1);
+    B.shutter = await offline(0.25, (oc) => {
+      for (const [t0, f, a] of [[0, 4200, 0.7], [0.07, 1800, 0.45]]) {
+        const src = oc.createBufferSource(); src.buffer = noiseBuffer(oc, 0.06, 'white', 1);
+        const bp = oc.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = 1.6;
+        const g = oc.createGain(); g.gain.setValueAtTime(a, t0); g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.05);
+        src.connect(bp).connect(g).connect(oc.destination); src.start(t0);
+      }
+    }, 1);
     B.heart = await offline(0.9, (oc) => {
       for (const [t0, a] of [[0, 0.9], [0.22, 0.6]]) {
         const o = oc.createOscillator(); o.frequency.setValueAtTime(62, t0); o.frequency.exponentialRampToValueAtTime(38, t0 + 0.12);
