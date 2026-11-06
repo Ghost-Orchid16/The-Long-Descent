@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M4 complete. Next: M5 (ascent & deco stops, surface interval, deck chamber + pressure fault).
+## Status: M5 complete. Next: M6 (pod cockpit, controls & systems, launch checklist, Twilight zone + CO2 scrubber).
 
 ### Done
 - **M1 — Water look test scene**
@@ -73,6 +73,19 @@
   - Optics: stronger deep adaptation, more diffuse light field with depth, mesopic desaturation of dim natural-light
     scenes (lamp-lit areas keep colour), torch no longer darkens daylight scenes, god rays fade out by ~48 m.
 
+- **M5 — Ascent, decompression, deck chamber**
+  - Ascent line from the wreck depth to a surface buoy with stop tags, research vessel overhead, distant wall.
+  - In-water stops at 12, 9 and 6 m (compressed to 30–45 s): ±1 m band, timer fills only inside the band, current that
+    strengthens away from the line plus vertical surges; stop gauge HUD; wrist computer shows the scripted stop;
+    fast ascents add time to the next stop; hang tank at 6 m (hold E to switch, 196 bar).
+  - Surface decompression: the surface interval (5 min, compressed) runs from leaving the 6 m stop, carries onto the
+    deck; climb into the chamber; late arrival switches to the longer table (no fail).
+  - Chamber interior inside the ship's chamber (cream steel shell, ring seams, benches, door, lamps, BIBS masks,
+    depth gauge with green band, supply/exhaust handwheels, O2 analyser LCD). Procedure: blow down to 15 m with ear
+    clearing, O2 period, air break, pressure fault (drifting needle with surges, hold 36 s in the green using the two
+    valves; out of the green for 9 s → tender stabilises it and some progress is lost), second O2 period, surfacing,
+    "two days later" card into the pod launch.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -81,6 +94,8 @@
   journal grid and detail page.
 - M4: drop-off lip, wall face at 40 m (natural light and torch on the red fan), barracuda vortex, wreck from above,
   free-flow bubble wall and H-valve overlay; shark display and free-flow flows driven headless with `?sim=`.
+- M5: 12 m stop with stop gauge and Snell's window, hang tank swap, deck with surface-interval timer, chamber
+  interior (mask, panel, gauge, valves); pressure-fault dynamics verified with a scripted controller.
 
 ### Known issues / to revisit
 - Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
@@ -91,5 +106,5 @@
 - Marine snow density must be raised per deep zone.
 
 ### Next
-- M5: Ascent line with current and ±1 m stop bands (timer fills only inside), hang tank at 6 m, surfacing,
-  surface interval to the deck chamber, chamber interior with O2 periods and the two-valve pressure fault.
+- M6: Pod (thrusters with spool-up, ballast, floodlights, sonar, manipulator arm), cockpit with diegetic instruments
+  and acrylic viewport, launch from the A-frame with the pre-dive checklist, Twilight zone + CO2 scrubber event.

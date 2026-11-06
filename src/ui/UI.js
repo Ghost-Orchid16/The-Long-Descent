@@ -30,6 +30,11 @@ export class UI {
     this.markerEl = el('div', 'wmarker hidden', this.layer);
     this.transitEl = el('div', 'transit', this.layer, '<div class="z"></div><div class="d tabnum"></div>');
     this.inspectEl = el('div', 'inspect', this.layer);
+    this.stopEl = el('div', 'stopgauge hidden', this.layer, `<div class="lbl">Stop</div><div class="dep tabnum"></div>
+      <div class="ruler"><div class="band"></div><div class="tick t0"></div><div class="me"></div></div>
+      <svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" class="bg"/><circle cx="22" cy="22" r="19" class="fg" stroke-dasharray="119.4" stroke-dashoffset="119.4"/></svg>
+      <div class="rem tabnum"></div><div class="hint"></div>`);
+    this.siEl = el('div', 'sitimer hidden', this.layer, '<div class="lbl">Surface interval</div><div class="t tabnum">5:00</div><div class="sub"></div>');
     this.species = new SpeciesUI(this);
 
     // scuba HUD
@@ -235,6 +240,30 @@ export class UI {
       this.transitEl.querySelector('.z').textContent = zone;
       this.transitEl.querySelector('.d').innerHTML = `${Math.round(depth).toLocaleString('en-US')}<small>m</small>`;
     }
+  }
+
+  /** Deco stop gauge: ruler of ±3 m around the stop with the ±1 m band and the diver's depth. */
+  stopGauge(o) {
+    const e = this.stopEl;
+    if (!o) { e.classList.add('hidden'); return; }
+    e.classList.remove('hidden');
+    e.querySelector('.dep').textContent = `${o.stop} m`;
+    const off = THREE.MathUtils.clamp(o.depth - o.stop, -3, 3);
+    e.querySelector('.me').style.top = `${50 + (off / 3) * 50}%`;
+    e.classList.toggle('in', o.inBand);
+    e.querySelector('.fg').setAttribute('stroke-dashoffset', String(119.4 * (1 - THREE.MathUtils.clamp(o.frac, 0, 1))));
+    e.querySelector('.rem').textContent = o.label;
+    e.querySelector('.hint').textContent = o.hint || '';
+  }
+
+  surfaceInterval(o) {
+    const e = this.siEl;
+    if (!o) { e.classList.add('hidden'); return; }
+    e.classList.remove('hidden');
+    const s = Math.max(0, Math.ceil(o.remaining));
+    e.querySelector('.t').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    e.classList.toggle('warn', o.remaining < 60);
+    e.querySelector('.sub').textContent = o.sub || '';
   }
 
   inspect(svg, caption, { high = false } = {}) {

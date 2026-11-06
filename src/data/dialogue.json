@@ -280,5 +280,155 @@
    "speaker": "TOPSIDE",
    "text": "Watch your gas. Head for the line at the bow and start up."
   }
+ ],
+ "ascent.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "On the line. Up you come — nine metres a minute, no faster. First stop is at twelve."
+  }
+ ],
+ "ascent.stop12": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Twelve metres. Hold here. Keep inside the band on your gauge — the current will try to move you."
+  }
+ ],
+ "ascent.stop9": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Nine metres. Same again. The timer only runs while you're in the band."
+  }
+ ],
+ "ascent.stop6": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Six metres. The crew hung a spare cylinder on the line here — switch onto it, you'll want the gas."
+  }
+ ],
+ "ascent.next": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Good. Up to the next stop, slowly."
+  }
+ ],
+ "ascent.slow": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Slow down! Nine metres a minute. That adds time to your next stop."
+  }
+ ],
+ "ascent.shallow": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're above the stop — drop back down into the band."
+  }
+ ],
+ "ascent.line": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Stay with the line. The current is stronger away from it."
+  }
+ ],
+ "ascent.hangTank": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's a full cylinder. Breathe easy."
+  }
+ ],
+ "ascent.lowAir": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're low on gas. There's a hang tank at six metres."
+  }
+ ],
+ "ascent.surfaceDeco": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's your in-water stops. We'll finish your decompression in the deck chamber — surface decompression."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Come straight up and get in the chamber. You have five minutes from leaving the stop."
+  }
+ ],
+ "chamber.deck": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Ladder's right here. Gear off on the move — straight to the chamber."
+  }
+ ],
+ "chamber.hurry": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Two minutes left. Keep moving."
+  }
+ ],
+ "chamber.late": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's over five minutes. We'll switch you to the longer treatment table. Get in."
+  }
+ ],
+ "chamber.in": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're in. Door's sealed. Blowing you down to fifty feet — fifteen metres. Clear your ears as we go."
+  }
+ ],
+ "chamber.o2": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "At depth. Mask on — first oxygen period. Breathe normally."
+  }
+ ],
+ "chamber.air": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Mask off. Five minutes on air — that air break keeps oxygen from building up too fast."
+  }
+ ],
+ "chamber.fault": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Pressure's wandering — the exhaust valve is sticking. Use your inside valves: supply raises pressure, exhaust lowers it."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Keep the needle in the green until I can swap the valve."
+  }
+ ],
+ "chamber.faultFix": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Got it, valve swapped. Nice and steady. Second oxygen period — mask back on."
+  }
+ ],
+ "chamber.faultSlip": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Out of the green! Bring it back — little movements on the valves."
+  }
+ ],
+ "chamber.faultReset": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "I've got it, I'm holding it from out here. Let's try that again — take the valves when you're ready."
+  }
+ ],
+ "chamber.surface": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Oxygen done. Bringing you up to the surface now."
+  }
+ ],
+ "chamber.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're clear. That's the diving phase done. Get some rest."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "In two days we take the pod down to ECHO-7."
+  }
  ]
 }

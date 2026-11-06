@@ -56,6 +56,7 @@ export class Diver {
     this.hudT = 0;
     this.lowAirWarned = false;
     this.fastAscentT = 0;
+    this.decoOverride = null;      // scripted stop shown on the wrist computer {depth, time}
 
     // Torch held in the right hand
     this.torch = new THREE.SpotLight(0xfff1df, 0, 0, THREE.MathUtils.degToRad(19), 0.6, 2);
@@ -170,7 +171,7 @@ export class Diver {
     this.hudT -= dt;
     if (this.hudT <= 0) {
       this.hudT = 0.1;
-      const st = this.computer.stop();
+      const st = this.decoOverride || this.computer.stop();
       this.game.ui.updateScuba({
         depth, diveTime: this.computer.diveTime, ndl: this.computer.ndl(depth), decoStop: st.depth, decoTime: st.time,
         temp: this.temperature ? this.temperature(depth) : reefTemperature(depth), ascentRate: this.ascentRate, air: this.air, airMax: this.airMax,

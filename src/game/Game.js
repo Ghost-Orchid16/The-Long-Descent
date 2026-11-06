@@ -93,7 +93,7 @@ export class Game {
     this.photo.exit();
     if (card) this.ui.card(...card);
     if (prev) { prev.exit(); }
-    if (this.player?.exportState) this.carry = this.player.exportState();
+    if (this.player?.exportState) this.carry = { ...(this.carry || {}), ...this.player.exportState() };
     if (this.player && !keepPlayer) { this.player.dispose?.(); this.player = null; }
     const mod = await STAGES[index]();
     const StageClass = mod.default;
