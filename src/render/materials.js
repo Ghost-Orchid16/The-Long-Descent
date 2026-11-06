@@ -139,3 +139,58 @@ export function makeFanNetMaterial(lib, { cells = 110 } = {}) {
   });
   return mat;
 }
+
+/**
+ * Wreck steel: triplanar rust with fouling. Upward faces carry coralline crust and silt, sides show rust streaks
+ * and encrusting sponge patches; roughness and normals from the rust texture.
+ */
+export function makeWreckMaterial(lib, { side = THREE.DoubleSide, key = '', foul = 1 } = {}) {
+  const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9, metalness: 0.05, side });
+  patchMaterial(mat, {
+    key: 'wreck' + key, ao: false, wrap: 0.2,
+    uniforms: {
+      tRA: { value: lib.rustA }, tRN: { value: lib.rustN }, tCA: { value: lib.reefA }, tCN: { value: lib.reefN }, tNz: { value: lib.noise },
+      uFoul: { value: foul },
+    },
+    vertexHead: 'varying vec3 vWkN;',
+    vertexEnd: 'vWkN = normalize(mat3(modelMatrix) * objectNormal);',
+    fragmentHead: 'uniform sampler2D tRA; uniform sampler2D tRN; uniform sampler2D tCA; uniform sampler2D tCN; uniform sampler2D tNz; uniform float uFoul; varying vec3 vWkN;\n' + TRI_FUNCS_GLSL,
+    fragmentColor: /* glsl */ `
+      vec3 wkN = normalize(vWkN);
+      #ifdef DOUBLE_SIDED
+        if (!gl_FrontFacing) wkN = -wkN;
+      #endif
+      vec3 wkW = triW(wkN);
+      vec4 rust = triS(tRA, vWaterWorldPos, wkW, 1.0 / 1.6);
+      vec4 crust = triS(tCA, vWaterWorldPos, wkW, 1.0 / 2.4);
+      vec4 nz = triS(tNz, vWaterWorldPos, wkW, 1.0 / 3.5);
+      vec4 nz2 = triS(tNz, vWaterWorldPos * 0.23, wkW, 1.0 / 2.0);
+      vec3 steel = rust.rgb * vec3(0.95, 0.78, 0.66);
+      // rust streaks running down vertical plates
+      float streak = smoothstep(0.55, 0.9, nz.g) * (1.0 - abs(wkN.y));
+      steel = mix(steel, steel * vec3(0.55, 0.32, 0.2), streak * 0.6);
+      // fouling: coralline crust + silt on top faces, sponge patches on the sides
+      float up = smoothstep(0.15, 0.75, wkN.y);
+      float foulA = clamp(up * (0.6 + 0.6 * nz2.r) + smoothstep(0.62, 0.8, nz2.g) * 0.55, 0.0, 1.0) * uFoul;
+      vec3 crustCol = crust.rgb * mix(vec3(0.82, 0.62, 0.72), vec3(0.78, 0.74, 0.62), nz.b);
+      vec3 col = mix(steel, crustCol, foulA);
+      float sponge = smoothstep(0.7, 0.78, nz2.b) * (1.0 - up) * uFoul;
+      col = mix(col, mix(vec3(0.85, 0.42, 0.12), vec3(0.62, 0.3, 0.55), step(0.5, nz.r)), sponge * 0.85);
+      col = mix(col, col * vec3(0.92, 0.9, 0.82) + vec3(0.04, 0.035, 0.03), up * 0.35 * uFoul); // silt
+      diffuseColor.rgb *= col;
+      float wkRough = mix(0.82, 0.95, foulA);
+    `,
+    fragmentRoughness: 'roughnessFactor = wkRough;',
+    fragmentNormal: /* glsl */ `
+      {
+        vec3 nR = triNrm(tRN, vWaterWorldPos, wkN, wkW, 1.0 / 1.6);
+        vec3 nC = triNrm(tCN, vWaterWorldPos, wkN, wkW, 1.0 / 2.4);
+        vec3 nd = normalize(mix(nR, nC, foulA));
+        vec3 geoNw = normalize((vec4(normal, 0.0) * viewMatrix).xyz);
+        vec3 nw = normalize(geoNw + (nd - wkN) * 0.9);
+        normal = normalize((viewMatrix * vec4(nw, 0.0)).xyz);
+      }
+    `,
+  });
+  return mat;
+}

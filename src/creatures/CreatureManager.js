@@ -552,7 +552,7 @@ export class CreatureManager {
       yawRate = step / dt;
       a.pitch += (tp - a.pitch) * Math.min(1, dt * 2);
       a.yawRate += (yawRate - a.yawRate) * Math.min(1, dt * 4);
-      a.roll += (clamp(-a.yawRate * o.bank, -0.6, 0.6) - a.roll) * Math.min(1, dt * 2);
+      a.roll += (clamp(-a.yawRate * o.bank, -0.6, 0.6) + Math.sin(this.time * 2.3 + a.i) * 0.3 * g.display - a.roll) * Math.min(1, dt * 2);
     }
     // ---- animation channels
     const cruise = Math.max(o.speed, 0.005);

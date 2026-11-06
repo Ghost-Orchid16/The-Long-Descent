@@ -209,7 +209,7 @@ export class WaterEnv {
       this.hemi.groundColor.setRGB(this.skyTint.r * gb * 0.8, this.skyTint.g * gb, this.skyTint.b * gb);
     }
     // the underwater light field becomes more diffuse with depth
-    this.hemi.intensity = sky * (this.above ? 1 : 1 + Math.min(Math.max(this.cameraDepth, 0), 40) * 0.025);
+    this.hemi.intensity = sky * (this.above ? 1 : 1 + Math.min(Math.max(this.cameraDepth, 0), 60) * 0.04);
     this.sun.visible = sun > 0.0001;
     this.hemi.visible = sky > 0.0001;
 
@@ -219,8 +219,14 @@ export class WaterEnv {
     } else {
       const d = Math.max(this.cameraDepth, 0);
       const lum = this.above ? (this.sunIntensity * 0.5 + this.skyIntensity) * nat : this.ambientAt(d);
-      this.exposureTarget = THREE.MathUtils.clamp(0.70 / Math.pow(lum + 0.02, 0.78), 0.45, 5.0);
-      if (this.lampExposureCap !== null) this.exposureTarget = Math.min(this.exposureTarget, this.lampExposureCap);
+      // near-complete adaptation (the eye keeps deep scenes readable), slightly less at the surface
+      this.exposureTarget = THREE.MathUtils.clamp(0.70 / Math.pow(lum + 0.02, 0.9), 0.45, 8.0);
+      // a lit torch caps adaptation fully in the dark, but only trims it where daylight still dominates
+      if (this.lampExposureCap !== null) {
+        const day = THREE.MathUtils.smoothstep(lum, 0.02, 0.15);
+        const cap = THREE.MathUtils.lerp(this.lampExposureCap, Math.max(this.lampExposureCap, this.exposureTarget * 0.72), day);
+        this.exposureTarget = Math.min(this.exposureTarget, cap);
+      }
     }
     const k = 1 - Math.exp(-dt * 1.6);
     this.exposure += (this.exposureTarget * this.exposureBias - this.exposure) * k;

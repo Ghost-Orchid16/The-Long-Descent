@@ -81,26 +81,10 @@ export function makeReefHeight(seed = 7) {
 /**
  * Build the reef: terrain + coral dressing. Returns {group, hf, scatter, colliders}.
  */
-export function buildReef(engine, { seed = 7, density = 1, area = null } = {}) {
+/** Shared coral/sponge/rock materials, geometry variants and colour palettes for reef dressing. */
+export function makeReefKit(engine, seed = 7) {
   const lib = engine.lib;
-  const rng = new RNG(seed * 31 + 5);
-  const R = makeReefHeight(seed);
-  const b = area || REEF_BOUNDS;
-  const cell = engine.preset.terrainCell * 0.55;
-  const hf = new Heightfield({
-    x0: b.x0, z0: b.z0, sizeX: b.sizeX, sizeZ: b.sizeZ, cell,
-    heightFn: R.height,
-    maskFn: (x, z, h, slope) => {
-      const r = R.rockiness(x, z);
-      const rubble = clamp(smoothstep(0.1, 0.45, r) * (1 - r) * 2 + slope * 0.3, 0, 1) * 0.5;
-      return [clamp(r + slope * 0.8, 0, 1), rubble, 0];
-    },
-  });
-  const group = new THREE.Group();
-  group.name = 'reef';
-  const terrainMat = makeTerrainMaterial(lib, { soft: 'sand', hard: 'reef', scaleB: 1 / 3.4, tintB: [1.05, 1.0, 1.0], tintC: [0.82, 0.78, 0.7] });
-  group.add(hf.buildMesh(terrainMat, { chunks: 16 }));
-
+  const rng = new RNG(seed * 57 + 11);
   // --- materials (shared per type) ---
   const M = {
     branch: makeOrganicMaterial(lib, { detail: 'coral', detailScale: 1 / 0.12, tipColor: [1.6, 1.6, 1.7], tipAmount: 0.6, roughness: 0.7, wrap: 0.25, key: 'branch' }),
@@ -166,6 +150,31 @@ export function buildReef(engine, { seed = 7, density = 1, area = null } = {}) {
     return c;
   };
 
+  return { M, G, col, palettes, rng };
+}
+
+export function buildReef(engine, { seed = 7, density = 1, area = null, heightMod = null, placeMask = null, kit = null, anemones: withAnemones = true } = {}) {
+  const lib = engine.lib;
+  const rng = new RNG(seed * 31 + 5);
+  const R0 = makeReefHeight(seed);
+  const R = heightMod ? { ...R0, height: (x, z) => heightMod(x, z, R0.height(x, z)), rockiness: (x, z) => R0.rockiness(x, z) * (placeMask ? placeMask(x, z) : 1) } : R0;
+  const b = area || REEF_BOUNDS;
+  const cell = engine.preset.terrainCell * 0.55;
+  const hf = new Heightfield({
+    x0: b.x0, z0: b.z0, sizeX: b.sizeX, sizeZ: b.sizeZ, cell,
+    heightFn: R.height,
+    maskFn: (x, z, h, slope) => {
+      const r = R.rockiness(x, z);
+      const rubble = clamp(smoothstep(0.1, 0.45, r) * (1 - r) * 2 + slope * 0.3, 0, 1) * 0.5;
+      return [clamp(r + slope * 0.8, 0, 1), rubble, 0];
+    },
+  });
+  const group = new THREE.Group();
+  group.name = 'reef';
+  const terrainMat = makeTerrainMaterial(lib, { soft: 'sand', hard: 'reef', scaleB: 1 / 3.4, tintB: [1.05, 1.0, 1.0], tintC: [0.82, 0.78, 0.7] });
+  group.add(hf.buildMesh(terrainMat, { chunks: 16 }));
+  const K = kit || makeReefKit(engine, seed);
+  const { M, G, col } = K;
   const sc = new Scatter({ cell: 40 });
   const nrm = new THREE.Vector3();
   const D = density * engine.preset.dressDensity;
@@ -218,7 +227,7 @@ export function buildReef(engine, { seed = 7, density = 1, area = null } = {}) {
   const anemGeo = gen.anemone(new RNG(seed + 900), { radius: 0.28 });
   const tent = C('#b8b060');
   const anemMat = makeOrganicMaterial(lib, { detail: null, tipColor: [tent.r, tent.g, tent.b], tipAmount: 1, tipReplace: true, sway: true, swayAmp: 0.08, roughness: 0.5, wrap: 0.6, translucent: 0.4, key: 'anemone2' });
-  const anemSpots = [REEF_POI.anemone, new THREE.Vector3(-14, 0, -48), new THREE.Vector3(30, 0, -50), new THREE.Vector3(-70, 0, -20)];
+  const anemSpots = withAnemones ? [REEF_POI.anemone, new THREE.Vector3(-14, 0, -48), new THREE.Vector3(30, 0, -50), new THREE.Vector3(-70, 0, -20)] : [];
   for (const p of anemSpots) {
     const y = hf.height(p.x, p.z);
     const pos = new THREE.Vector3(p.x, y - 0.03, p.z);
@@ -229,5 +238,5 @@ export function buildReef(engine, { seed = 7, density = 1, area = null } = {}) {
 
   group.add(sc.build());
   console.log('[reef] dressing', JSON.stringify(sc.stats));
-  return { group, hf, scatter: sc, reef: R, anemones, materials: M };
+  return { group, hf, scatter: sc, reef: R, anemones, materials: M, kit: K };
 }

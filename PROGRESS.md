@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M3 complete. Next: M4 (deep wall & wreck: narcosis, shark threat display, free-flow).
+## Status: M4 complete. Next: M5 (ascent & deco stops, surface interval, deck chamber + pressure fault).
 
 ### Done
 - **M1 — Water look test scene**
@@ -56,12 +56,31 @@
     knife by holding E, thrashing tightens lines and raises panic/air use); transition to the wall at the drop-off.
   - Dev: `?sim=N` runs N logic steps per rendered frame for headless flow tests (`scripts/play.cjs`).
 
+- **M4 — Deep Wall & Wreck (30–60 m)**
+  - Wall face as a displaced sheet (buttresses, terraces, caves, slight undercut) with a rounded rocky lip joining the
+    reef-top height field; 50 m ledge falling away on three sides; collision for sheet, lip and ledge.
+  - Reef dressing refactored into a shared kit (`makeReefKit`); wall dressing by depth (plates and soft corals up top,
+    gorgonians, wire corals, sponges deeper), drop-off rim, ledge and wreck growth; giant red fan at ~40 m (torch moment).
+  - Fictional broken-backed coastal freighter (`world/wreck.js`): lofted hull with bilge radius, open holds, forecastle,
+    deckhouse + bridge, leaning funnel, masts and derricks, winches, spilled drums; rust/fouling triplanar material;
+    box/capsule colliders; moray holes; expedition acoustic recorder on the forward mast (first ECHO-7 clue: its
+    emergency pinger is still running).
+  - Grey reef shark threat display event (approach, hunched display with exaggerated swimming and rolling, progress by
+    stopping/facing/backing to the wall, escalation to a close pass + panic breathing, forgiving exit).
+  - Regulator free-flow event (roar, bubble wall, gas drain with a safety floor; grab, purge and breathe the yellow
+    backup, then turn the H-valve's left post closed by dragging). Gas and tissue state carry into the next stage.
+  - Narcosis radio + effect, chevron barracuda vortex, trevally, eagle rays, morays, sharks; ascent line from the bow.
+  - Optics: stronger deep adaptation, more diffuse light field with depth, mesopic desaturation of dim natural-light
+    scenes (lamp-lit areas keep colour), torch no longer darkens daylight scenes, god rays fade out by ~48 m.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
 - M3: creature galleries per zone (studio), resting green turtle on sand, anemone with anemonefish + lower third,
   manta arriving at the station under god rays, ghost-net curtain + strands, cutting flow, photo mode with DoF,
   journal grid and detail page.
+- M4: drop-off lip, wall face at 40 m (natural light and torch on the red fan), barracuda vortex, wreck from above,
+  free-flow bubble wall and H-valve overlay; shark display and free-flow flows driven headless with `?sim=`.
 
 ### Known issues / to revisit
 - Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
@@ -72,5 +91,5 @@
 - Marine snow density must be raised per deep zone.
 
 ### Next
-- M4: Deep wall & wreck (30–60 m): vertical wall with overhangs and fans, wreck on a ledge, grey reef shark threat
-  display, barracuda vortex, narcosis, regulator free-flow (switch to the backup second stage), deco planning.
+- M5: Ascent line with current and ±1 m stop bands (timer fills only inside), hang tank at 6 m, surfacing,
+  surface interval to the deck chamber, chamber interior with O2 periods and the two-valve pressure fault.

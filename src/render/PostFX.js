@@ -38,7 +38,7 @@ class WaterFXEffect extends Effect {
 class GradeEffect extends Effect {
   constructor() {
     super('Grade', /* glsl */ `
-      uniform float uExposure, uSaturation, uContrast, uLift;
+      uniform float uExposure, uSaturation, uContrast, uLift, uMesopic;
       uniform vec3 uWhite;
       vec3 rrtOdt(vec3 v) { vec3 a = v * (v + 0.0245786) - 0.000090537; vec3 b = v * (0.983729 * v + 0.4329510) + 0.238081; return a / b; }
       vec3 aces(vec3 c) {
@@ -51,6 +51,9 @@ class GradeEffect extends Effect {
         c = aces(c);
         float l = dot(c, vec3(0.2126, 0.7152, 0.0722));
         c = mix(vec3(l), c, uSaturation);
+        // mesopic vision: dim natural-light scenes lose saturation (rods), lamp-lit bright areas keep colour (cones)
+        float meso = uMesopic * (1.0 - smoothstep(0.2, 0.75, l));
+        c = mix(c, vec3(l) * vec3(0.78, 1.0, 1.12), meso);
         c = mix(vec3(0.18), c, uContrast) + (0.18 - 0.18 * uContrast) * 0.0;
         c = max(c, 0.0) + uLift * (1.0 - c);
         outputColor = vec4(clamp(c, 0.0, 1.0), inputColor.a);
@@ -58,7 +61,7 @@ class GradeEffect extends Effect {
     `, {
       blendFunction: BlendFunction.NORMAL,
       uniforms: new Map([
-        ['uExposure', U(1)], ['uSaturation', U(1)], ['uContrast', U(1)], ['uLift', U(0)], ['uWhite', U(new THREE.Vector3(1, 1, 1))],
+        ['uExposure', U(1)], ['uSaturation', U(1)], ['uContrast', U(1)], ['uLift', U(0)], ['uMesopic', U(0)], ['uWhite', U(new THREE.Vector3(1, 1, 1))],
       ]),
     });
   }
@@ -215,6 +218,7 @@ export class PostFX {
     const ex = env.exposure * Math.pow(2, this.photoEV || 0);
     this.grade.uniforms.get('uExposure').value = ex;
     this.grade.uniforms.get('uWhite').value.copy(env.whiteBalance);
+    this.grade.uniforms.get('uMesopic').value = env.above ? 0 : THREE.MathUtils.smoothstep(env.cameraDepth, 16, 48) * 0.72 * Math.min(1, env.naturalLight);
     this.bloom.luminanceMaterial.threshold = this.bloomBaseThreshold / Math.max(ex, 0.05);
     this.water.uniforms.get('uClock').value = this.clock;
     this.final.uniforms.get('uSeed').value = (this.clock * 60) % 1000;
@@ -222,7 +226,8 @@ export class PostFX {
     const glass = this.glassAmount ?? 1;
     lu.get('uDistort').value = this.reducedMotion ? 0 : -0.05 * glass;
     lu.get('uCA').value = 0.0055 * glass;
-    this.vol.enabledShafts = env.above ? 0 : env.type.godrays;
+    // god rays fade out between ~28 and ~48 m (spec: 0–40 m)
+    this.vol.enabledShafts = env.above ? 0 : env.type.godrays * (1 - THREE.MathUtils.smoothstep(env.cameraDepth, 28, 48));
     this.composer.render(dt);
   }
 }

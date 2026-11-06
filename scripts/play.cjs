@@ -9,11 +9,14 @@ const { chromium } = require('playwright');
   const t0 = Date.now();
   const log = (s) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${s}`);
   page.on('console', (m) => { const t = m.text(); if (!/\[vite\]/.test(t)) log(`[${m.type()}] ${t}`); });
-  page.on('pageerror', (e) => log(`[pageerror] ${e.message}\n${e.stack || ''}`));
+  let fatal = false;
+  page.on('pageerror', (e) => { log(`[pageerror] ${e.message}\n${e.stack || ''}`); fatal = true; });
   await page.goto(base + '?' + job.q, { waitUntil: 'load' });
+  await page.evaluate(() => window.addEventListener('error', () => { window.__fatal = true; }));
   for (const s of job.steps) {
+    if (fatal && !job.continueOnError) { log('aborting after page error'); break; }
     try {
-      if (s.waitFor) await page.waitForFunction(s.waitFor, null, { timeout: s.timeout || 240000, polling: 250 });
+      if (s.waitFor) await page.waitForFunction(`(${s.waitFor}) || window.__fatal`, null, { timeout: s.timeout || 240000, polling: 250 });
       if (s.wait) await page.waitForTimeout(s.wait);
       if (s.eval) { const r = await page.evaluate(s.eval); if (r !== undefined) log('[eval] ' + JSON.stringify(r)); }
       if (s.shot) { await page.screenshot({ path: s.shot, timeout: 120000 }); log('shot ' + s.shot); }

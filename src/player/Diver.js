@@ -80,6 +80,22 @@ export class Diver {
     this.engine.env.lampExposureCap = null;
   }
 
+  /** Gas and tissue state carried between scuba stages. */
+  exportState() {
+    return { air: this.air, p: this.computer.p.slice(), diveTime: this.computer.diveTime, maxDepth: this.computer.maxDepth, lowAirWarned: this.lowAirWarned, torchOn: this.torchOn };
+  }
+
+  importState(s) {
+    if (!s) return;
+    this.air = s.air ?? this.air;
+    if (s.p) this.computer.p = s.p.slice();
+    this.computer.diveTime = s.diveTime ?? 0;
+    this.computer.maxDepth = s.maxDepth ?? 0;
+    this.lowAirWarned = !!s.lowAirWarned;
+    this.prevDepth = this.depth;
+    if (s.torchOn) this.setTorch(true);
+  }
+
   setTorch(on) {
     this.torchOn = on;
     this.torch.intensity = on ? this.torchIntensity : 0;

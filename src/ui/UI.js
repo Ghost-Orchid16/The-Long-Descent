@@ -237,9 +237,10 @@ export class UI {
     }
   }
 
-  inspect(svg, caption) {
+  inspect(svg, caption, { high = false } = {}) {
     if (!svg) { this.inspectEl.classList.remove('show'); return; }
     this.inspectEl.innerHTML = svg + (caption ? `<div class="cap">${caption}</div>` : '');
+    this.inspectEl.classList.toggle('high', high);
     this.inspectEl.classList.add('show');
   }
 
