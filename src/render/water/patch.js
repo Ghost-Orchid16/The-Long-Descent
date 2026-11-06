@@ -73,7 +73,7 @@ export function patchMaterial(mat, o = {}) {
     !!o.sway, o.swayAmp ?? 1, !!o.ao, !!o.additive, !!o.noMedium, o.key || '', o.wrap || 0, o.translucent || 0,
     o.varyings, o.vertexHead, o.vertexTransform, o.vertexNormal, o.worldHook, o.vertexEnd,
     o.fragmentHead, o.fragmentColor, o.fragmentNormal, o.fragmentRoughness, o.fragmentEmissive,
-    o.fragmentPreLights, o.fragmentOutput, o.fragmentFinal,
+    o.fragmentPreLights, o.fragmentOutput, o.fragmentFinal, o.fragmentMetalness, o.envGain ?? 1,
   ]));
   const prevCompile = mat.onBeforeCompile;
   mat.onBeforeCompile = (shader, renderer) => {
@@ -86,6 +86,7 @@ export function patchMaterial(mat, o = {}) {
     if (o.sway) defs.push('#define W_SWAY', '#define W_SWAY_AMP ' + (o.swayAmp ?? 1).toFixed(3));
     if (o.ao) defs.push('#define W_AO');
     if (o.wrap) defs.push('#define W_WRAP ' + o.wrap.toFixed(3));
+    defs.push('#define W_ENV_GAIN ' + (o.envGain ?? 1).toFixed(3));
     if (o.translucent) defs.push('#define W_TRANSLUCENT ' + o.translucent.toFixed(3));
     const defStr = defs.join('\n') + '\n';
 
@@ -135,6 +136,9 @@ export function patchMaterial(mat, o = {}) {
     if (o.fragmentRoughness) {
       fs = fs.replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n' + o.fragmentRoughness);
     }
+    if (o.fragmentMetalness) {
+      fs = fs.replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\n' + o.fragmentMetalness);
+    }
     if (o.fragmentEmissive) {
       fs = fs.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n' + o.fragmentEmissive);
     }
@@ -148,8 +152,22 @@ export function patchMaterial(mat, o = {}) {
         #else
           float wAO = 1.0;
         #endif
+        if ( !( dot( normal, normal ) > 1e-6 ) ) normal = vec3( 0.0, 0.0, 1.0 );
         ${o.fragmentPreLights || ''}
         ${lightsChunk()}`);
+    }
+    if (fs.includes('#include <lights_fragment_maps>')) {
+      fs = fs.replace('#include <lights_fragment_maps>', `#include <lights_fragment_maps>
+        #if defined( RE_IndirectSpecular ) && !defined( USE_ENVMAP )
+        if ( uWAbove < 0.5 ) {
+          vec3 wN = normalize( ( vec4( geometryNormal, 0.0 ) * viewMatrix ).xyz );
+          vec3 wV = normalize( ( vec4( geometryViewDir, 0.0 ) * viewMatrix ).xyz );
+          vec3 wR = reflect( -wV, wN );
+          float wPD = max( wDepth( vWaterWorldPos ), 0.0 );
+          // the water body as an environment: bright above (towards the light), dark below
+          radiance += ( wInScatter( wPD, wR, 80.0 ) * 1.6 + ( uWSunColor * 0.25 + uWSkyColor ) * exp( -uWKd * wPD ) * pow( max( wR.y, 0.0 ), 3.0 ) * 0.12 ) * W_ENV_GAIN;
+        }
+        #endif`);
     }
     if (o.fragmentOutput) {
       fs = fs.replace('#include <opaque_fragment>', o.fragmentOutput + '\n#include <opaque_fragment>');

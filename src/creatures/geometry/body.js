@@ -29,7 +29,7 @@ export class CMesh {
   tri(a, b, c) { this.i.push(a, b, c); }
   /** Two-sided flat polygon (fan from first point). pts: [[x,y,z], ...]; body attrs per point via fn. */
   flat(pts, normal, attrFn, { twoSided = true } = {}) {
-    const n = normal.clone().normalize();
+    const n = normal.lengthSq() > 1e-14 ? normal.clone().normalize() : new THREE.Vector3(0, 1, 0);
     const base = this.count;
     pts.forEach((q, k) => { const a = attrFn(q, k); this.v(q[0], q[1], q[2], n.x, n.y, n.z, a.u ?? 0, a.v ?? 0, a.t, a.l, a.h, a.part); });
     for (let k = 1; k < pts.length - 1; k++) this.tri(base, base + k, base + k + 1);
@@ -51,7 +51,10 @@ export class CMesh {
         const an = rowA[Math.min(m - 1, k + 1)], ap = rowA[Math.max(0, k - 1)];
         e1.set(an[0] - ap[0], an[1] - ap[1], an[2] - ap[2]);
         e2.set(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
-        nrm.crossVectors(e1, e2).normalize().multiplyScalar(flip ? -1 : 1);
+        if (e2.lengthSq() < 1e-12) { const bn = rowB[Math.min(m - 1, k + 1)], bp = rowB[Math.max(0, k - 1)]; e2.set((bn[0] + bp[0]) / 2 - a[0], (bn[1] + bp[1]) / 2 - a[1], (bn[2] + bp[2]) / 2 - a[2]); }
+        nrm.crossVectors(e1, e2);
+        if (nrm.lengthSq() < 1e-14) nrm.set(1, 0, 0);
+        nrm.normalize().multiplyScalar(flip ? -1 : 1);
         const aa = attrFn(a, k, 0), ab = attrFn(b, k, 1);
         this.v(a[0], a[1], a[2], nrm.x, nrm.y, nrm.z, aa.u ?? k / (m - 1), 0, aa.t, aa.l, aa.h, aa.part);
         this.v(b[0], b[1], b[2], nrm.x, nrm.y, nrm.z, ab.u ?? k / (m - 1), 1, ab.t, ab.l, ab.h, ab.part);
@@ -85,6 +88,7 @@ export class CMesh {
       for (let r = 0; r <= radial; r++) {
         const ang = (r / radial) * Math.PI * 2;
         const dn = N[k].clone().multiplyScalar(Math.cos(ang)).addScaledVector(B[k], Math.sin(ang));
+        if (!(dn.lengthSq() > 1e-12)) dn.set(0, 1, 0);
         this.v(pts[k][0] + dn.x * radii[k], pts[k][1] + dn.y * radii[k], pts[k][2] + dn.z * radii[k], dn.x, dn.y, dn.z, r / radial, k / (n - 1), at.t, at.l, at.h, at.part);
       }
     }
@@ -242,13 +246,16 @@ export function buildBody(P) {
       const p0 = [xb, yb + w / 2, zOf(t)], p1 = [xb, yb - w / 2, zOf(t) + w * 0.2];
       const tip = [xb + dir.x * len, yb + dir.y * len, zOf(t) + dir.z * len];
       const tip2 = [xb + dir.x * len * 0.8, yb + dir.y * len * 0.8 - w * 0.4, zOf(t) + dir.z * len * 0.85];
-      const nrm2 = new THREE.Vector3().crossVectors(new THREE.Vector3(tip[0] - p0[0], tip[1] - p0[1], tip[2] - p0[2]), new THREE.Vector3(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2])).normalize();
+      const nrm2 = new THREE.Vector3().crossVectors(new THREE.Vector3(tip[0] - p0[0], tip[1] - p0[1], tip[2] - p0[2]), new THREE.Vector3(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]));
+      if (nrm2.lengthSq() < 1e-14) nrm2.set(s, 0, 0);
+      nrm2.normalize();
       m.flat([p0, tip, tip2, p1], nrm2, (q, k) => ({ t, l: s * (1 + (k === 1 || k === 2 ? 1 : 0)), h: f.h ?? 0, part, u: k === 1 || k === 2 ? 1 : 0, v: k }));
     }
   };
   paired(P.pectoral, PART.PECTORAL);
   paired(P.pelvic, PART.PELVIC);
   // ---- spines / filaments
+  m.spineTips = [];
   for (const sp of P.spines || []) {
     const t = sp.t, yb = sp.bottom ? botAt(t) : topAt(t);
     const len = sp.len * L, r = (sp.r ?? 0.006) * L;
@@ -259,6 +266,7 @@ export function buildBody(P) {
       rr.push(r * (1 - u * 0.85));
     }
     m.tube(pts, rr, 4, (k, u) => ({ t, l: 0, h: 1 + u, part: PART.SPINE }));
+    m.spineTips.push(pts[pts.length - 1]);
   }
   // ---- eyes
   if (P.eye) {
