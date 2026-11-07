@@ -2,7 +2,7 @@ import { Engine } from '../core/Engine.js';
 import { settings } from '../core/Settings.js';
 import { Game } from './Game.js';
 import { Menus } from '../ui/Menus.js';
-import { loadSave } from '../core/Save.js';
+import { loadSave, emptySave } from '../core/Save.js';
 import facts from '../data/facts.json';
 
 export async function boot(params) {
@@ -28,8 +28,10 @@ export async function boot(params) {
     window.__ready = true;
     return;
   }
+  menus.setLoading(0.75);
+  await game.loadTitle();
   menus.hideLoading();
-  game.state = 'title';
+  window.__ready = true;
   const mobile = matchMedia('(pointer: coarse)').matches && !matchMedia('(pointer: fine)').matches;
   const save = loadSave();
   const choice = await menus.showTitle({ canContinue: !!save && save.stage > 0, mobile });
@@ -37,6 +39,11 @@ export async function boot(params) {
     game.save = save;
     await game.goToStage(save.stage);
   } else {
+    // a new dive keeps the field journal and photos, and starts the expedition over
+    const keep = game.save;
+    game.save = emptySave();
+    if (keep) { game.save.journal = keep.journal || {}; game.save.photos = keep.photos || {}; game.save.photoMeta = keep.photoMeta || {}; }
+    game.carry = null;
     await game.goToStage(0);
   }
   game.input.requestLock();

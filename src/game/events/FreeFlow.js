@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 import { patchMaterial } from '../../render/water/patch.js';
 
 const _p = new THREE.Vector3(), _v = new THREE.Vector3();
@@ -62,6 +63,7 @@ export class FreeFlow {
     this.diver = diver;
     this.active = true;
     this.step = 'grab';
+    bus.emit('tension', true);
     diver.freeflow = 3.0;
     diver.panic = Math.min(1, diver.panic + 0.4);
     this.roar = audio.loop('pink', { gain: 0.5, bus: 'sfx', filter: { type: 'bandpass', freq: 900, Q: 0.5 } });
@@ -140,6 +142,7 @@ export class FreeFlow {
   _finish() {
     const game = this.game, d = this.diver;
     this.active = false; this.done = true; this.step = null;
+    bus.emit('tension', false);
     d.freeflow = 0;
     d.lookLocked = false;
     this.roar?.stop(0.6); this.roar2?.stop(0.6);

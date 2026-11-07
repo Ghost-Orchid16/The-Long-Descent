@@ -14,6 +14,7 @@ export class SedimentPlume {
   start() {
     if (this.active || this.done) return;
     this.active = true;
+    bus.emit('tension', true);
     const env = this.game.engine.env;
     env.setWaterType('plume', 3.5);
     this.pod.setFloodScatter(4.5);
@@ -36,6 +37,7 @@ export class SedimentPlume {
 
   _finish() {
     this.active = false; this.done = true;
+    bus.emit('tension', false);
     this.unsub?.(); this.unsub = null;
     this.pod.setWaypoint(null);
     this.game.engine.env.setWaterType('deep', 4);

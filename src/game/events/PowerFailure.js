@@ -1,4 +1,5 @@
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 
 const ORDER = ['life', 'lights', 'thrust'];
 
@@ -19,6 +20,7 @@ export class PowerFailure {
     if (this.active || this.done) return;
     const game = this.game, pod = this.pod, ck = pod.cockpit;
     this.active = true;
+    bus.emit('tension', true);
     this.floodsWere = pod.floodsOn;
     pod.setFloods(false);
     pod.sys.power = 0;
@@ -61,6 +63,7 @@ export class PowerFailure {
   _finish() {
     const pod = this.pod;
     this.active = false; this.done = true;
+    bus.emit('tension', false);
     pod.sys.power = 1; pod.sys.bus = null; pod.redAlert = false; pod.warn = '';
     for (const it of this.items) this.game.interactions.remove(it);
     this.items.length = 0;

@@ -21,6 +21,7 @@
 .radio { position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(760px, 86vw); text-align: center;
   font-size: 16px; line-height: 1.45; color: var(--ink); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9); transition: opacity 0.4s; opacity: 0; }
 .radio.show { opacity: 1; }
+.radio.nosub .txt, .radio.nosub .skip { display: none; }
 .radio .who { display: block; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; font-weight: 600; }
 .radio .txt { font-weight: 400; }
 .radio .skip { display: block; font-size: 10px; color: var(--ink-faint); margin-top: 6px; letter-spacing: 0.08em; }

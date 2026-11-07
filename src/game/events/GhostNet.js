@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { patchMaterial } from '../../render/water/patch.js';
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 
 const _a = new THREE.Vector3(), _b = new THREE.Vector3(), _f = new THREE.Vector3(), _r = new THREE.Vector3(), _u = new THREE.Vector3(0, 1, 0);
 const _q = new THREE.Quaternion();
@@ -115,6 +116,7 @@ export class GhostNet {
       this.strands.push(s);
     });
     diver.speedScale = 0.06;
+    bus.emit('tension', true);
     audio.play('creak', { gain: 0.4, rate: 1.8 });
     g.ui.setMarker(() => { const s = this.strands.find((x) => !x.cut); return s ? this._mid(s, _a) : diver.pos; }, 'Line', { minDist: 0 });
   }
@@ -141,6 +143,7 @@ export class GhostNet {
     this.game.ui.setObjectiveSub('net', `(${4 - this.remaining}/4)`);
     if (this.remaining === 0) {
       this.done = true; this.active = false;
+      bus.emit('tension', false);
       this.game.ui.setMarker(null);
       this.diver.speedScale = 1;
       this.onDone?.();

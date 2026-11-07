@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M8 complete. Next: M9 (audio/music, menus & settings, title over a live scene, save/continue, loading screens, quality benchmark).
+## Status: M9 complete. Next: M10 (playthrough QA, performance, console hygiene, GLB overrides, deploy configs and docs).
 
 ### Done
 - **M1 — Water look test scene**
@@ -135,6 +135,17 @@
   - Ending: ascent montage with zone names and radio, light and water type returning, breaking the surface at dusk next
     to the ship; summary screen (max depth, species found, photos, events handled, time played) and scrolling credits.
 
+- **M9 — Audio, menus, settings, loading, benchmark**
+  - Procedural score (`core/audio/Music.js`): detuned pad chords per zone with filter LFOs and slow crossfades,
+    glassy bells in the deep zones, a bell-arpeggio swell on every new species, a tension layer (pulse + dissonant
+    cluster) during all events, distant humpback-like whale song on the wall and the ascent, radio squelch.
+  - Title over a live reef scene (cleaning station, manta circling, chromis, turtle) with a slow camera orbit.
+  - First-launch auto-quality benchmark (median frame time → low / medium / high), stored in settings.
+  - Settings screen (title and pause): quality incl. auto, resolution scale, FOV, mouse sensitivity, invert Y,
+    master/music/SFX volume, subtitles, reduced motion, objective markers; live where possible.
+  - Loading screen between stages with the area name, depth range, progress and a real ocean fact.
+  - New dive keeps the field journal and photos; continue resumes at the last checkpoint.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -151,6 +162,7 @@
   black-smoker chimney in the floods, sediment plume; power failure and plume flows driven headless.
 - M8: abyssal plain with nodules and mounds, outcrop with glass sponges, cable snag; bait station with amphipods;
   ECHO-7 with the bag on the trench floor; ascent montage, dusk surfacing, summary screen.
+- M9: title over the live reef, settings screen.
 
 ### Known issues / to revisit
 - Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
@@ -161,6 +173,5 @@
 - Marine snow density must be raised per deep zone.
 
 ### Next
-- M9: settings screen (quality incl. auto, resolution scale, sensitivity, invert Y, FOV, volumes, subtitles, reduced
-  motion), title over a live underwater scene, loading screens with depth + fact between stages, music pads per
-  zone with discovery swells and event tension layer, quality auto-benchmark.
+- M10: full playthrough QA, performance pass, console hygiene (no warnings/errors), GLB override loader via
+  `public/models/manifest.json`, `vercel.json`, `netlify.toml`, `README.md`, `ASSETS.md`, `CREDITS.md`.

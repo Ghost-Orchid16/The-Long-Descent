@@ -11,6 +11,7 @@ import { makeRockMaterial } from '../../render/materials.js';
 import { cableMesh } from '../../world/landers.js';
 import { Noise, RNG, smoothstep, clamp } from '../../world/noise.js';
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const BASE = 4560;
@@ -185,6 +186,7 @@ export default class AbyssalStage extends Stage {
     if (!f.snagged && !f.freed && dh < 3.0 && pod.pos.y < this.snag.y + 2.4) {
       f.snagged = true;
       this.snagPoint = pod.pos.clone();
+      bus.emit('tension', true);
       audio.play('creak', { gain: 0.6, rate: 0.7 }); audio.play('thunk', { gain: 0.5, rate: 0.5 });
       game.say('abyssal.cable.snag', { interrupt: true });
       this._objectives();
@@ -217,6 +219,7 @@ export default class AbyssalStage extends Stage {
   _free(how) {
     const game = this.game, f = this.flags;
     f.freed = true; f.gripping = false;
+    bus.emit('tension', false);
     game.ui.prompt(null);
     audio.play(how === 'cut' ? 'switch' : 'creak', { gain: 0.6, rate: how === 'cut' ? 0.5 : 1.2 });
     // the loop drops back to the sediment

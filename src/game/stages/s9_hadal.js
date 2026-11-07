@@ -10,6 +10,7 @@ import { buildBaitStation, buildEcho7 } from '../../world/landers.js';
 import { interiorMaterial } from '../../player/Cockpit.js';
 import { Noise, RNG, smoothstep, clamp } from '../../world/noise.js';
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 const BASE_A = 6960, BASE_B = 10880;
@@ -236,6 +237,7 @@ export default class HadalStage extends Stage {
       onUse: () => {
         game.interactions.remove(this.dropItem);
         this.flags.jam = true;
+        bus.emit('tension', true);
         audio.play('thunk', { gain: 0.7, rate: 0.5 });
         audio.playAlarm('warn', 0.8);
         game.say('hadal.jam', { interrupt: true });
@@ -268,6 +270,7 @@ export default class HadalStage extends Stage {
   _released() {
     const game = this.game;
     this.flags.released = true;
+    bus.emit('tension', false);
     this.release.step = null;
     audio.play('thunk', { gain: 0.9, rate: 0.35 });
     audio.play('creak', { gain: 0.6, rate: 1.1 });
