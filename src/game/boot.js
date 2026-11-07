@@ -4,6 +4,8 @@ import { Game } from './Game.js';
 import { Menus } from '../ui/Menus.js';
 import { loadSave, emptySave } from '../core/Save.js';
 import facts from '../data/facts.json';
+import { loadOverrides } from '../creatures/overrides.js';
+import { modelLength } from '../creatures/factory.js';
 
 export async function boot(params) {
   const menus = new Menus(null);
@@ -17,6 +19,7 @@ export async function boot(params) {
   const quality = params.get('q') || settings.quality();
   const engine = new Engine(document.getElementById('app'), { quality, resolutionScale: settings.get('resolutionScale'), fov: settings.get('fov') });
   menus.setLoading(0.6);
+  await loadOverrides(modelLength);
   const game = new Game(engine, params);
   menus.game = game;
   game.menus = menus;

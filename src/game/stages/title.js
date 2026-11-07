@@ -84,6 +84,6 @@ export default class TitleStage extends Stage {
     const q = med > 28 ? 'low' : med < 12.5 ? 'high' : 'medium';
     settings.set('resolvedQuality', q);
     this.engine.setQuality(settings.quality());
-    console.info(`[quality] auto: ${q} (median frame ${med.toFixed(1)} ms)`);
+    if (import.meta.env?.DEV) console.info(`[quality] auto: ${q} (median frame ${med.toFixed(1)} ms)`);
   }
 }

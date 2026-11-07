@@ -228,7 +228,7 @@ export function buildWall(engine, { seed = 11 } = {}) {
     else put('clump', p, n0, { align: 0.9, scale: rng.range(0.6, 1.2), mat: M.massive, colorType: 'clump', maxDist: 34 });
   }
   group.add(sc.build());
-  console.log('[wall] dressing', JSON.stringify(sc.stats));
+  if (import.meta.env?.DEV) console.log('[wall] dressing', JSON.stringify(sc.stats));
 
   // ---- collision-only height field for the tongue/lip (the reef height field ends at z = 127)
   const lipHF = new Heightfield({
