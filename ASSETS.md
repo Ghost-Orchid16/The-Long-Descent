@@ -28,7 +28,7 @@ only applies to the generated bodies) and get the underwater optics automaticall
 | [ambientCG](https://ambientcg.com/) | PBR textures | CC0, no attribution required |
 | [Kenney](https://kenney.nl/assets) | Game models and sounds | CC0 |
 | [Quaternius](https://quaternius.com/) | Low-poly animals and props | CC0 |
-| [Sketchfab](https://sketchfab.com/search?features=downloadable&licenses=7c23a1ba438d4306920229c12afcb5f9&licenses=322a749bcfa841b29dff1e8a1bb74b0b&type=models) | Large library incl. marine life | Filter by CC0 or CC BY; CC BY requires credit (author, title, link, license) |
+| [Sketchfab](https://sketchfab.com/search?features=downloadable&type=models) | Large library incl. marine life | Use the license filter (CC0 or CC BY); CC BY requires credit (author, title, link, license) |
 | [Freesound](https://freesound.org/) | Field recordings, hydrophone sounds | Per sound: CC0 needs nothing, CC BY needs credit, avoid NC licenses for redistribution |
 | [NOAA Ocean Exploration](https://oceanexplorer.noaa.gov/) | Reference imagery and video of deep habitats | Mostly public domain (US government work); use as reference |
 

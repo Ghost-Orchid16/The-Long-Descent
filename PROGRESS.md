@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M9 complete. Next: M10 (playthrough QA, performance, console hygiene, GLB overrides, deploy configs and docs).
+## Status: M10 complete — all milestones done. The game is playable start to finish (stages 0–10).
 
 ### Done
 - **M1 — Water look test scene**
@@ -146,6 +146,15 @@
   - Loading screen between stages with the area name, depth range, progress and a real ocean fact.
   - New dive keeps the field journal and photos; continue resumes at the last checkpoint.
 
+- **M10 — QA, hygiene, deploy**
+  - Console sweep of every stage (dev server and production preview): no warnings or errors; development logs only
+    in dev builds (`scripts/consolecheck.cjs`).
+  - Chained transition test 0 → 10: every stage builds, enters and disposes cleanly; GPU geometry counts return to
+    baseline after each stage (no leaks across zones).
+  - Optional per-species glTF overrides (`public/models/manifest.json`, see ASSETS.md).
+  - `vercel.json`, `netlify.toml`, README (run, controls, build, deploy), ASSETS.md, CREDITS.md.
+  - Production build: static `dist/` of about 2.3 MB with relative paths.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -165,13 +174,13 @@
 - M9: title over the live reef, settings screen.
 
 ### Known issues / to revisit
-- Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
-- Stages 2–10 are temporary dev stubs until their milestones.
-- Reef colonies still read somewhat CG up close.
-- Some deep-zone creature models are simple silhouettes; refine when their zones are built (M6–M8).
-- Table-coral outlines are polygonal from below.
-- Marine snow density must be raised per deep zone.
+- Frame rate on the target hardware (Iris Xe at 1080p, medium) has not been measured here: all testing ran on
+  headless software rendering. The first-launch benchmark picks low / medium / high from measured frame times.
+- Some deep-zone creature models are simple silhouettes; the reef colonies and the research vessel could use a
+  further detailing pass.
+- The radio is subtitles with a squelch; there is no recorded voice.
+- Gamepad mapping is implemented but untested on physical controllers.
+- Decompression, depth and time are compressed for play and are not dive guidance.
 
 ### Next
-- M10: full playthrough QA, performance pass, console hygiene (no warnings/errors), GLB override loader via
-  `public/models/manifest.json`, `vercel.json`, `netlify.toml`, `README.md`, `ASSETS.md`, `CREDITS.md`.
+- Measure and tune performance on integrated GPUs; refine models flagged above.

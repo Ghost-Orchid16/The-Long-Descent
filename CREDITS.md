@@ -25,7 +25,8 @@ Species information was checked against conservative, published sources and kept
   vent of NW Eifuku, the model for the liquid-CO₂ seep
 - Chiba et al. (2018), *Human footprint in the abyss: 30 year records of deep-sea plastic debris*, Marine Policy —
   a plastic bag recorded at 10,898 m in the Mariana Trench
-- Jamieson et al. (2023) — the deepest fish filmed, a snailfish at about 8,336 m
+- Minderoo–UWA Deep Sea Research Centre and Tokyo University of Marine Science and Technology (2023) — a snailfish
+  filmed at about 8,336 m in the Izu–Ogasawara Trench, the deepest fish yet recorded
 - Bühlmann ZHL-16C decompression model (Bühlmann & Völlm, *Tauchmedizin*) for the wrist computer
 - U.S. Navy Diving Manual — surface decompression with oxygen, used for the chamber sequence
 
