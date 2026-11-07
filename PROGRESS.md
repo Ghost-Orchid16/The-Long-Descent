@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M6 complete. Next: M7 (midnight zone: bioluminescence, lights-off, CO2 vent and black smokers, power failure, sediment plume + sonar).
+## Status: M7 complete. Next: M8 (abyssal plain + arm sample + cable entanglement, hadal trench + bait station + ECHO-7 + drop-weight jam, ending).
 
 ### Done
 - **M1 — Water look test scene**
@@ -107,6 +107,21 @@
     sperm whale heard clicking (positional clicks, then creaks) before it crosses in front of the pod;
     CO2 scrubber alarm (open panel, pull canister, insert spare, restart fan); ballast flood to continue.
 
+- **M7 — Midnight zone**
+  - Guided descent 640 → 1,560 m with a brief giant squid crossing the floods at ~900 m and radio facts.
+  - Area A (~1,600 m): volcano flank with a sediment basin, small white chimneys and a liquid-CO2 seep (milky droplets
+    rising in wavering columns, after the NW Eifuku "Champagne" vent), vent mussel beds, anglerfish, fangtooth,
+    loosejaw, gulper eel, Atolla jellyfish. Lights-off moment: floods off for 20 s while bioluminescent sparks
+    (spontaneous and wake-triggered flashes) and the Atolla's "burglar alarm" display play out.
+  - Second descent to 3,560 m with the power failure at ~2,400 m: floods, screens, cabin lights and thrusters die,
+    red emergency light, breaker panel restored in order (life support → lights → thrusters; wrong order trips back);
+    the pod now models separate power buses.
+  - Area B (~3,600 m): sulphide mound with flanged black-smoker chimneys and smoke plumes lit by the floods, vent shrimp
+    swarming the chimney walls, vent crabs at the bases, hairy snails near the orifices. Sediment plume: visibility
+    near zero (plume water type, milky flood backscatter, short scanner range), sonar pings reveal terrain and the exit
+    waypoint box; reach it to clear the water. Ballast flood continues to the abyssal plain.
+  - Viewport glass condensation now depends on the light reaching it (no glow in total darkness).
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -119,6 +134,8 @@
   interior (mask, panel, gauge, valves); pressure-fault dynamics verified with a scripted controller.
 - M6: pod on deck in its cradle, cockpit with screens and viewport, overhead switches, A-frame lift, guided descent at
   26 m, seamount summit and flank with floods, cockpit with floods off; whale pass and CO2 flows driven headless.
+- M7: CO2 seep with white chimneys and droplets, lights-off bioluminescence, red emergency cockpit with breakers,
+  black-smoker chimney in the floods, sediment plume; power failure and plume flows driven headless.
 
 ### Known issues / to revisit
 - Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
@@ -129,6 +146,6 @@
 - Marine snow density must be raised per deep zone.
 
 ### Next
-- M7: Midnight zone in two areas: ~1,600 m CO2 seep (liquid CO2 droplets, vent mussels) and ~3,600 m black smokers
-  (shrimp swarms, vent crabs, scaly-foot-type snails); lights-off moment, power failure with the breaker sequence,
-  sediment plume navigated by sonar.
+- M8: Abyssal plain (~4,600 m: sea pigs, tripod fish, dumbo octopus, glass sponges, brittle stars, grenadiers; arm
+  sample; cable entanglement), hadal trench (~7,000 m bait station with snailfish and amphipods; ~10,900 m floor
+  with xenophyophores, ECHO-7 and the plastic bag; drop-weight jam), ending ascent, summary and credits.

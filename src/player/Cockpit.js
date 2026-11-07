@@ -44,7 +44,7 @@ function viewportGlass(r, halfAngle) {
   geo.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), POD.viewDir));
   const mat = new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, side: THREE.DoubleSide,
-    uniforms: { uFog: { value: 0.35 }, uTime: { value: 0 }, uAxis: { value: POD.viewDir.clone() }, uHalf: { value: halfAngle }, uTint: { value: new THREE.Color(0.75, 0.85, 0.9) } },
+    uniforms: { uFog: { value: 0.35 }, uTime: { value: 0 }, uAxis: { value: POD.viewDir.clone() }, uHalf: { value: halfAngle }, uTint: { value: new THREE.Color(0.75, 0.85, 0.9) }, uLight: { value: 1 } },
     vertexShader: /* glsl */ `
       varying vec3 vP; varying vec3 vN; varying vec3 vV;
       void main() {
@@ -55,7 +55,7 @@ function viewportGlass(r, halfAngle) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uFog; uniform float uTime; uniform vec3 uAxis; uniform float uHalf; uniform vec3 uTint;
+      uniform float uFog; uniform float uTime; uniform vec3 uAxis; uniform float uHalf; uniform vec3 uTint; uniform float uLight;
       varying vec3 vP; varying vec3 vN; varying vec3 vV;
       float h(vec2 p) { return fract(sin(dot(p, vec2(41.3, 289.1))) * 43758.5453); }
       float n2(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -70,8 +70,9 @@ function viewportGlass(r, halfAngle) {
         float drops = step(0.93, n2(q * 4.0)) * smoothstep(0.6, 0.95, ang) * uFog;
         float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 4.0);
         float scratch = smoothstep(0.985, 1.0, n2(vec2(q.x * 0.4, q.y * 9.0))) * 0.08;
-        vec3 col = uTint * (cond * 0.55 + drops * 0.3) + vec3(0.9, 0.95, 1.0) * (fres * 0.06 + scratch);
-        float a = clamp(cond * 0.5 + drops * 0.25 + fres * 0.08 + scratch + 0.015, 0.0, 0.85);
+        // condensation only shows where light reaches it (cabin lamp behind, floods outside)
+        vec3 col = (uTint * (cond * 0.55 + drops * 0.3) + vec3(0.9, 0.95, 1.0) * (fres * 0.06 + scratch)) * uLight;
+        float a = clamp((cond * 0.5 + drops * 0.25) * clamp(uLight * 1.5, 0.15, 1.0) + fres * 0.08 + scratch + 0.015, 0.0, 0.85);
         gl_FragColor = vec4(col, a);
       }`,
   });

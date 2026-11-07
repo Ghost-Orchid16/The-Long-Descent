@@ -30,6 +30,12 @@ export const WATER_TYPES = {
     inScatterGain: 1.0, caustics: 0.0, causticScale: 6.0, godrays: 0.0, surge: 0.0,
     lightPath: 0.55,
   },
+  // Sediment plume: resuspended silt, visibility of a metre or two in the floods.
+  plume: {
+    kd: [0.42, 0.064, 0.026], sigma: [1.1, 1.0, 0.95], scatter: [0.085, 0.078, 0.07],
+    inScatterGain: 1.0, caustics: 0.0, causticScale: 6.0, godrays: 0.0, surge: 0.0,
+    lightPath: 0.55,
+  },
   // Hadal: fine resuspended sediment, slightly murkier.
   hadal: {
     kd: [0.42, 0.064, 0.026], sigma: [0.36, 0.11, 0.095], scatter: [0.012, 0.020, 0.026],

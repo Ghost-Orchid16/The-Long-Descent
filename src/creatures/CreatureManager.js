@@ -207,6 +207,8 @@ export class CreatureManager {
       g.active = dHome < g.o.active + g.o.radius;
       g.mesh.visible = g.visible && g.active;
       if (!g.active) continue;
+      if (g.beh === 'sessile' && g.settled) continue; // placed once; nothing moves
+      if (g.beh === 'sessile') g.settled = true;
       if (g.o.onUpdate) g.o.onUpdate(g, dt);
       this._groupStep(g, dt);
       for (const a of g.agents) this._agentStep(g, a, dt);

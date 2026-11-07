@@ -612,5 +612,131 @@
    "speaker": "TOPSIDE",
    "text": "That's the bottom of the twilight zone. Flood your ballast and we'll take you down into the midnight zone."
   }
+ ],
+ "midnight.squid": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Wait — on your right. Something long… arms. That's a giant squid. There, and gone."
+  }
+ ],
+ "midnight.d1000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "A thousand metres. From here down no sunlight reaches at all. Every light you see out there is made by an animal."
+  }
+ ],
+ "midnight.d1350": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Most of what lives here makes its own light — to lure prey, find a mate, or startle a predator."
+  }
+ ],
+ "midnight.arriveA": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "This is the flank of a submarine volcano. There's a seep down here that releases liquid carbon dioxide."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "It's on your sonar. Take her down to it."
+  }
+ ],
+ "midnight.seep": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Look at that — droplets of liquid CO₂ rising out of the sediment, each wrapped in a thin skin of ice-like hydrate."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "A vent like this one was found on the NW Eifuku volcano in these islands, at about sixteen hundred metres. The mussels live off bacteria that feed on the vent chemistry."
+  }
+ ],
+ "midnight.lightsOff": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Do something for me. Turn the floods off with F and just watch for a while."
+  }
+ ],
+ "midnight.lightsOffDone": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Beautiful, isn't it. That jellyfish spinning a ring of blue light is an Atolla — its 'burglar alarm', a flash meant to bring in something bigger to attack whatever's attacking it."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Floods back on when you're ready. Then flood the ballast — we're going a lot deeper."
+  }
+ ],
+ "midnight.power.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Power's dropped out! You're on the emergency lights. Don't panic — the sphere's fine."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Breaker panel, right wall. Life support first, then lights, then thrusters."
+  }
+ ],
+ "midnight.power.order": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Wrong order — it'll keep tripping. Life support, then lights, then thrusters."
+  }
+ ],
+ "midnight.power.life": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Life support's back. Scrubber is running."
+  }
+ ],
+ "midnight.power.lights": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Lights and instruments are back. Now the thrusters."
+  }
+ ],
+ "midnight.power.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Main power restored. Resuming the descent."
+  }
+ ],
+ "midnight.d3000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Three thousand metres. Three hundred atmospheres outside."
+  }
+ ],
+ "midnight.arriveB": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're over the back-arc spreading ridge. There's a black-smoker field on the mound ahead — check your sonar."
+  }
+ ],
+ "midnight.smokers": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Those chimneys are built from metal sulphides that drop out of water as hot as three hundred and fifty degrees, the moment it hits the near-freezing sea."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Everything living here runs on chemistry, not sunlight. The shrimp crowd the warm water on the chimney walls."
+  }
+ ],
+ "midnight.plume.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You've lost visibility — part of a chimney's come down and stirred up the sediment."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "You can't see, but sonar can. Ping with R and steer for the box on the sonar display. Go slowly."
+  }
+ ],
+ "midnight.plume.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're out of it. Good flying. When you're ready, flood the ballast — next stop, the abyssal plain."
+  }
  ]
 }

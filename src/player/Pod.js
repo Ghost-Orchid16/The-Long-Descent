@@ -45,7 +45,7 @@ export class Pod {
     this.external = null;       // stage-driven world transform (A-frame lift): Matrix4 or null
     this.wobble = 0;
     // systems
-    this.sys = { battery: 100, o2: 20.9, co2: 700, cabinTemp: 19, scrubberOn: true, power: 1, lifeOnBattery: true, thrustersOn: true, lightsOn: true, comms: true };
+    this.sys = { battery: 100, o2: 20.9, co2: 700, cabinTemp: 19, scrubberOn: true, power: 1, lifeOnBattery: true, thrustersOn: true, lightsOn: true, comms: true, bus: null };
     this.floodsOn = false;
     this.floods = this.model.floods.map((boom, i) => {
       const sl = new THREE.SpotLight(0xfff2e2, 0, 0, i === 2 ? 0.62 : 0.5, 0.55, 2);
@@ -55,7 +55,7 @@ export class Pod {
       return sl;
     });
     this.floodIntensity = 420;
-    this.floods.forEach((l, i) => lamps.add(l, { volumetric: i === 2 ? 0.12 : 0.28 }));
+    this.floodEntries = this.floods.map((l, i) => lamps.add(l, { volumetric: i === 2 ? 0.12 : 0.28 }));
     // sonar
     this.sonar = { returns: [], sweep: -1, maxRange: 150, waypoint: null, t: 0 };
     this.sonarTargets = null;   // stage: () => [{pos, kind}]
@@ -75,6 +75,10 @@ export class Pod {
   }
 
   get depth() { return this.engine.env.depthBase - this.pos.y; }
+  // power buses: during a power failure each one comes back separately at the breaker panel
+  get lifeBus() { return this.sys.power > 0.5 || !!this.sys.bus?.life; }
+  get lightsBus() { return this.sys.power > 0.5 || !!this.sys.bus?.lights; }
+  get thrustBus() { return this.sys.power > 0.5 || !!this.sys.bus?.thrust; }
 
   exportState() { return { battery: this.sys.battery, co2: this.sys.co2, o2: this.sys.o2, floodsOn: this.floodsOn }; }
   importState(s) { if (!s) return; if (s.battery !== undefined) this.sys.battery = s.battery; if (s.co2 !== undefined) this.sys.co2 = Math.min(s.co2, 1200); if (s.floodsOn) this.setFloods(true); }
@@ -89,15 +93,18 @@ export class Pod {
   }
 
   setFloods(on) {
-    this.floodsOn = on && this.sys.power > 0.5 && this.sys.lightsOn;
+    this.floodsOn = on && this.lightsBus && this.sys.lightsOn;
     this.floods.forEach((l) => { l.intensity = this.floodsOn ? this.floodIntensity * (l === this.floods[2] ? 0.6 : 1) : 0; l.visible = this.floodsOn; });
     this.model.mats.lamp.emissiveIntensity = this.floodsOn ? 6 : 0;
     this.engine.env.lampExposureCap = this.floodsOn ? 1.6 : null;
     audio.play('switch', { gain: 0.5, bus: 'ui' });
   }
 
+  /** Scale the floods' volumetric backscatter (a sediment plume turns the beams into a milky wall). */
+  setFloodScatter(k = 1) { this.floodEntries.forEach((e, i) => (e.volumetric = (i === 2 ? 0.12 : 0.28) * k)); }
+
   ping() {
-    if (this.sys.power < 0.5) return;
+    if (!this.lightsBus) return;
     audio.play('ping', { gain: 0.55 });
     const s = this.sonar;
     s.sweep = 0; s.t = 0;
@@ -140,14 +147,14 @@ export class Pod {
     const input = this.game.input;
     const sys = this.sys;
     // ---- head look (free look inside the sphere); the arm takes the mouse while right button is held
-    this.armActive = !this.locked && input.altDown?.() && this.sys.power > 0.5;
+    this.armActive = !this.locked && input.altDown?.() && this.thrustBus;
     if (!this.lookLocked && !this.game.interactions.capturesLook) {
       const k = this.armActive ? 0.6 : 1;
       this.headYaw = THREE.MathUtils.clamp(this.headYaw - input.look.x * k, -1.9, 1.9);
       this.headPitch = THREE.MathUtils.clamp(this.headPitch - input.look.y * k, -1.1, 0.95);
     }
     // ---- thrusters with spool-up
-    const live = !this.locked && sys.power > 0.5 && sys.thrustersOn && !this.external;
+    const live = !this.locked && this.thrustBus && sys.thrustersOn && !this.external;
     const cmdF = live ? input.move.z : 0, cmdY = live ? -input.move.x : 0, cmdV = live ? input.move.y : 0;
     const boost = live && input.isDown('sprint') ? 1.5 : 1;
     const sp = Math.min(1, dt * 1.3);
@@ -177,7 +184,7 @@ export class Pod {
     // ---- systems
     const thrustUse = Math.abs(this.tF) + Math.abs(this.tV) * 0.7 + Math.abs(this.tY) * 0.4;
     sys.battery = Math.max(3, sys.battery - dt * (0.006 + thrustUse * 0.03 + (this.floodsOn ? 0.012 : 0)));
-    if (sys.scrubberOn && sys.power > 0.5) sys.co2 += (720 - sys.co2) * Math.min(1, dt * 0.08);
+    if (sys.scrubberOn && this.lifeBus) sys.co2 += (720 - sys.co2) * Math.min(1, dt * 0.08);
     else sys.co2 += dt * (this.co2Rate ?? 55);
     sys.o2 += (20.9 - sys.o2) * Math.min(1, dt * 0.05) + (Math.random() - 0.5) * 0.002;
     sys.cabinTemp += ((19 - Math.min(9, this.depth / 600)) - sys.cabinTemp) * Math.min(1, dt * 0.01);
@@ -203,8 +210,8 @@ export class Pod {
       if (d > 150) audio.play('creak', { gain: 0.12 + k * 0.5, rate: 0.7 + Math.random() * 0.4 });
     }
     // ---- audio
-    this.thrustLoop?.setGain(Math.min(0.5, thrustUse * 0.28) * (sys.power > 0.5 ? 1 : 0), 0.2);
-    this.whine?.setGain(Math.min(0.06, thrustUse * 0.035) * (sys.power > 0.5 ? 1 : 0), 0.2);
+    this.thrustLoop?.setGain(Math.min(0.5, thrustUse * 0.28) * (this.thrustBus ? 1 : 0), 0.2);
+    this.whine?.setGain(Math.min(0.06, thrustUse * 0.035) * (this.thrustBus ? 1 : 0), 0.2);
     this._apply(dt);
     // ---- instruments at ~8 Hz
     this.drawT -= dt;
@@ -213,16 +220,17 @@ export class Pod {
       this.cockpit.draw({
         depth: d, vSpeed: this.vSpeed, pressureAtm: 1 + Math.max(0, d) / 10.06, waterTemp: oceanTemperature(Math.max(0, d)),
         heading: ((THREE.MathUtils.radToDeg(-this.yaw) % 360) + 360) % 360,
-        o2: sys.o2, co2: sys.co2, battery: sys.battery, cabinTemp: sys.cabinTemp, scrubberOn: sys.scrubberOn, power: sys.power, lifeOnBattery: sys.lifeOnBattery,
+        o2: sys.o2, co2: sys.co2, battery: sys.battery, cabinTemp: sys.cabinTemp, scrubberOn: sys.scrubberOn && this.lifeBus, power: this.lightsBus ? 1 : 0, lifeOnBattery: this.lifeBus,
         sonar: this.sonar, warn: this.warn || '',
       });
     }
     this.cockpit.update(dt);
     const ex = Math.max(0.3, this.engine.env.exposure);
-    const on = sys.power > 0.5 && sys.lifeOnBattery;
+    const on = this.lightsBus && sys.lifeOnBattery;
     this.cockpit.cabinLight.intensity = (on ? 2.4 : 0) / ex;
-    this.cockpit.screenLight.intensity = (sys.power > 0.5 ? 0.5 : 0) / ex;
-    this.cockpit.redLight.intensity = (this.redAlert ? 1.8 : 0) / ex;
+    this.cockpit.screenLight.intensity = (this.lightsBus ? 0.5 : 0) / ex;
+    this.cockpit.redLight.intensity = (this.redAlert ? 4.5 : 0) / ex;
+    this.cockpit.glass.material.uniforms.uLight.value = ((on ? 0.45 : 0) + (this.floodsOn ? 0.55 : 0) + (this.redAlert ? 0.25 : 0)) * Math.min(1, 1.6 / ex);
     const sk = Math.min(1, 1.25 / ex);
     for (const k in this.cockpit.screens) this.cockpit.screens[k].mesh.material.color.setScalar(sk);
   }
