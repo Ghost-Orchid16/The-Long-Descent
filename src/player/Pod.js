@@ -39,6 +39,7 @@ export class Pod {
     this.headYaw = 0; this.headPitch = -0.12;
     this.tF = 0; this.tY = 0; this.tV = 0; this.tS = 0;
     this.radius = 1.75;
+    this.vertAccel = 0.16;      // m/s² from the vertical thrusters (stages with long descents raise it: variable ballast)
     this.locked = false;        // no pilot control (launch, transitions, events)
     this.lookLocked = false;
     this.external = null;       // stage-driven world transform (A-frame lift): Matrix4 or null
@@ -49,12 +50,12 @@ export class Pod {
     this.floods = this.model.floods.map((boom, i) => {
       const sl = new THREE.SpotLight(0xfff2e2, 0, 0, i === 2 ? 0.62 : 0.5, 0.55, 2);
       sl.position.set(0, 0, -0.12);
-      const tgt = new THREE.Object3D(); tgt.position.set(0, i === 2 ? -3 : -1.2, -8);
+      const tgt = new THREE.Object3D(); tgt.position.set(i === 0 ? -0.8 : i === 1 ? 0.8 : 0, i === 2 ? -4.5 : -2.6, -8);
       boom.add(sl, tgt); sl.target = tgt;
       return sl;
     });
-    this.floodIntensity = 520;
-    this.floods.forEach((l) => lamps.add(l, { volumetric: 1 }));
+    this.floodIntensity = 420;
+    this.floods.forEach((l, i) => lamps.add(l, { volumetric: i === 2 ? 0.12 : 0.28 }));
     // sonar
     this.sonar = { returns: [], sweep: -1, maxRange: 150, waypoint: null, t: 0 };
     this.sonarTargets = null;   // stage: () => [{pos, kind}]
@@ -154,7 +155,7 @@ export class Pod {
     if (!this.external) {
       _f.set(-Math.sin(this.yaw), 0, -Math.cos(this.yaw));
       const acc = _v.copy(_f).multiplyScalar(this.tF * 0.3);
-      acc.y += this.tV * 0.16;
+      acc.y += this.tV * this.vertAccel;
       acc.add(this.engine.env.current.clone().multiplyScalar(0.3));
       if (this.extraForce) acc.add(this.extraForce);
       const spd = this.vel.length();
@@ -217,6 +218,13 @@ export class Pod {
       });
     }
     this.cockpit.update(dt);
+    const ex = Math.max(0.3, this.engine.env.exposure);
+    const on = sys.power > 0.5 && sys.lifeOnBattery;
+    this.cockpit.cabinLight.intensity = (on ? 2.4 : 0) / ex;
+    this.cockpit.screenLight.intensity = (sys.power > 0.5 ? 0.5 : 0) / ex;
+    this.cockpit.redLight.intensity = (this.redAlert ? 1.8 : 0) / ex;
+    const sk = Math.min(1, 1.25 / ex);
+    for (const k in this.cockpit.screens) this.cockpit.screens[k].mesh.material.color.setScalar(sk);
   }
 
   _arm(dt) {

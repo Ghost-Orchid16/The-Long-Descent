@@ -510,5 +510,107 @@
    "speaker": "TOPSIDE",
    "text": "Going down. Next stop, the twilight zone."
   }
+ ],
+ "twilight.d60": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Sixty metres. The reds and oranges are already gone outside."
+  }
+ ],
+ "twilight.d140": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Light's fading fast. Floodlights are on F when you want them — and R pings the sonar."
+  }
+ ],
+ "twilight.d200": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Two hundred metres: the twilight zone. There's still a little daylight here, but far too little for anything to grow."
+  }
+ ],
+ "twilight.d300": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Slowing you down. There's a seamount below you — its summit is at about three hundred and fifty metres."
+  }
+ ],
+ "twilight.arrive": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You have the controls. W and S for thrust, A and D to turn, Space and C to rise and sink."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Follow the flank down. Lots of animals here rise towards the surface at night and sink back down by day."
+  }
+ ],
+ "twilight.floods": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Try the floods with F. Turn them off now and then — let your eyes find what little light is left."
+  }
+ ],
+ "twilight.whale.clicks": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hear that? Clicks on the hydrophone, about one every second. That's a sperm whale, echolocating."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "They hunt squid down here. It's somewhere out in the dark."
+  }
+ ],
+ "twilight.whale.pass": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "There it is. Fifteen metres of whale. It's seen you long before you saw it."
+  }
+ ],
+ "twilight.co2.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "CO₂ alarm. The scrubber canister's spent — the absorbent can't take any more."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Swap it: open the panel on your left, pull the old canister, put in the spare, restart the fan."
+  }
+ ],
+ "twilight.co2.open": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Panel's on the left wall."
+  }
+ ],
+ "twilight.co2.pull": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Pull the spent canister out."
+  }
+ ],
+ "twilight.co2.insert": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Spare's just below. Slot it in."
+  }
+ ],
+ "twilight.co2.fan": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Now restart the fan."
+  }
+ ],
+ "twilight.co2.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "CO₂ is coming down. Breathe easy — the headache will fade."
+  }
+ ],
+ "twilight.next": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's the bottom of the twilight zone. Flood your ballast and we'll take you down into the midnight zone."
+  }
  ]
 }

@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M5 complete. Next: M6 (pod cockpit, controls & systems, launch checklist, Twilight zone + CO2 scrubber).
+## Status: M6 complete. Next: M7 (midnight zone: bioluminescence, lights-off, CO2 vent and black smokers, power failure, sediment plume + sonar).
 
 ### Done
 - **M1 — Water look test scene**
@@ -86,6 +86,27 @@
     valves; out of the green for 9 s → tender stabilises it and some progress is lost), second O2 period, surfacing,
     "two days later" card into the pod launch.
 
+- **M6 — Pod, launch, Twilight zone**
+  - Pod exterior (`world/podModel.js`): titanium sphere with the viewport opening, frame and skids, syntactic foam,
+    thrusters, three floodlight booms, sample basket, drop weights, articulated manipulator arm.
+  - Cockpit (`player/Cockpit.js`): padded sphere interior, acrylic viewport (rim condensation, droplets, scratches,
+    Fresnel glint), console with three live canvas screens (navigation: depth, vertical speed, outside pressure in atm,
+    water temperature, heading tape; life support: O2, CO2 ppm, battery, cabin; sonar PPI), overhead checklist
+    switches with LEDs, CO2 scrubber unit with hinged cover/canisters/fan, breaker panel, hatch, seat, cabin lights
+    (compensated for outside eye adaptation). Interior materials ignore sun and sky.
+  - Pod controller (`player/Pod.js`): spool-up thrusters, momentum and drag, yaw, vertical thrust, collision with bump
+    feedback, free head look, floods (F), sonar ping (R) with terrain/target returns, 2-link IK arm (hold right mouse,
+    click to grip), battery/O2/CO2/cabin model, CO2 dims vision, hull creaks growing with depth, thruster audio,
+    ocean temperature profile.
+  - Launch stage: pod in the cradle, board from the deck, five-switch checklist in order (radio facts incl. the
+    one-atmosphere sphere), A-frame hoist / run aft / swing out / lower with pendulum sway, splash, bobbing on the
+    swell with the waterline across the viewport, flood the ballast to dive.
+  - Twilight stage: guided descent 25 → 330 m with the depth counter running, light fading, snow rushing past and
+    radio lines; seamount flank 355–640 m (basalt and ooze, black corals, gorgonians, sponges, boulders);
+    nautilus, hatchetfish, lanternfish school, siphonophore, comb jellies, vampire squid, sixgill; faint overhead glow;
+    sperm whale heard clicking (positional clicks, then creaks) before it crosses in front of the pod;
+    CO2 scrubber alarm (open panel, pull canister, insert spare, restart fan); ballast flood to continue.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -96,6 +117,8 @@
   free-flow bubble wall and H-valve overlay; shark display and free-flow flows driven headless with `?sim=`.
 - M5: 12 m stop with stop gauge and Snell's window, hang tank swap, deck with surface-interval timer, chamber
   interior (mask, panel, gauge, valves); pressure-fault dynamics verified with a scripted controller.
+- M6: pod on deck in its cradle, cockpit with screens and viewport, overhead switches, A-frame lift, guided descent at
+  26 m, seamount summit and flank with floods, cockpit with floods off; whale pass and CO2 flows driven headless.
 
 ### Known issues / to revisit
 - Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
@@ -106,5 +129,6 @@
 - Marine snow density must be raised per deep zone.
 
 ### Next
-- M6: Pod (thrusters with spool-up, ballast, floodlights, sonar, manipulator arm), cockpit with diegetic instruments
-  and acrylic viewport, launch from the A-frame with the pre-dive checklist, Twilight zone + CO2 scrubber event.
+- M7: Midnight zone in two areas: ~1,600 m CO2 seep (liquid CO2 droplets, vent mussels) and ~3,600 m black smokers
+  (shrimp swarms, vent crabs, scaly-foot-type snails); lights-off moment, power failure with the breaker sequence,
+  sediment plume navigated by sonar.

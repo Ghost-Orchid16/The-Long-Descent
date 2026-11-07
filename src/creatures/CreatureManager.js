@@ -380,10 +380,12 @@ export class CreatureManager {
       case 'giant': {
         const len = g.curveLen || 1;
         a.s += (o.speed * dt) / len;
-        const s = ((a.s % 1) + 1) % 1;
+        const open = o.loop === false;
+        const s = open ? Math.min(a.s, 1) : ((a.s % 1) + 1) % 1;
         g.curve.getPointAt(s, _t);
-        const ahead = ((s + Math.max(2.5, L * 1.5) / len) % 1 + 1) % 1;
+        const ahead = open ? Math.min(1, s + Math.max(2.5, L * 1.5) / len) : ((s + Math.max(2.5, L * 1.5) / len) % 1 + 1) % 1;
         g.curve.getPointAt(ahead, _a);
+        if (open && s >= 1) _a.copy(a.p).addScaledVector(a.v.lengthSq() > 1e-6 ? _d.copy(a.v).normalize() : _d.set(0, 0, 1), 10);
         const lag = a.p.distanceTo(_t);
         want.subVectors(_a, a.p).normalize().multiplyScalar(o.speed * (1 + clamp(lag / 6, 0, 0.8)));
         speedCap = o.speed * 1.8;

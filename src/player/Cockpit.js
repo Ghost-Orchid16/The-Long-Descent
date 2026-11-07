@@ -149,8 +149,8 @@ export class Cockpit {
       const pivot = new THREE.Group(); pivot.add(lever); pivot.rotation.x = 0.5;
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), new THREE.MeshBasicMaterial({ color: 0x401010, toneMapped: false }));
       led.position.set(0, 0.012, 0.045);
-      const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.15, 0.035), new THREE.MeshBasicMaterial({ map: labelTexture(label, { size: 24 }), transparent: true, toneMapped: false }));
-      tag.rotation.x = -Math.PI / 2; tag.position.set(0, 0.012, -0.06);
+      const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.16, 0.04), new THREE.MeshBasicMaterial({ map: labelTexture(label, { w: 320, h: 80, size: 40 }), transparent: true, toneMapped: false }));
+      tag.rotation.x = -Math.PI / 2; tag.position.set(0, 0.012, -0.062);
       sw.add(base, pivot, led, tag);
       sw.position.set(-0.34 + i * 0.17, 0.0, 0.0);
       const holder = new THREE.Group(); holder.position.copy(over.position); holder.rotation.copy(over.rotation);
