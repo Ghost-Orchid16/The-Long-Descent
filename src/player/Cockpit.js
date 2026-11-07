@@ -13,7 +13,7 @@ export function interiorMaterial(params = {}, { glow = 0 } = {}) {
   const m = new THREE.MeshStandardMaterial({ roughness: 0.7, metalness: 0.1, ...params });
   m.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <lights_fragment_begin>', _interiorChunk); };
   m.customProgramCacheKey = () => 'cockpitInterior';
-  m.envMapIntensity = 0.12;
+  m.envMapIntensity = 0.05;
   void glow;
   return m;
 }

@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M7 complete. Next: M8 (abyssal plain + arm sample + cable entanglement, hadal trench + bait station + ECHO-7 + drop-weight jam, ending).
+## Status: M8 complete. Next: M9 (audio/music, menus & settings, title over a live scene, save/continue, loading screens, quality benchmark).
 
 ### Done
 - **M1 — Water look test scene**
@@ -122,6 +122,19 @@
     waypoint box; reach it to clear the water. Ballast flood continues to the abyssal plain.
   - Viewport glass condensation now depends on the light reaching it (no glow in total darkness).
 
+- **M8 — Abyssal, Hadal, Ending**
+  - Abyssal plain (~4,600 m): ooze plain with manganese nodules, burrow mounds and boulders, a basalt outcrop with
+    glass sponges; sea pig herd, perched tripod fish, dumbo octopus, brittle stars, grenadiers, sea cucumbers. Arm
+    sample (grip a nodule, stowed in the basket). Cable entanglement: an abandoned cable loop snags the skid — grip it
+    with the arm, then cut (hold click) or pull free (hold click + S); the loop drops back to the sediment.
+  - Hadal trench: ~7,000 m terrace with the expedition's baited camera lander swarmed by amphipods and snailfish;
+    guided descent past 8,000 / 9,000 / 10,000 m; the Challenger Deep floor (~10,900 m) between steep walls with
+    xenophyophores and amphipods. ECHO-7 lies tipped in the ooze with a plastic bag over its transducer (quiet, no
+    lecture); pull the bag off with the arm (it comes home in the basket) and ECHO-7's beacon starts talking again.
+    Drop-weight jam: manual release (lift guard, arm, pump the hydraulics ×5, pull the T-handle) while the hull creaks.
+  - Ending: ascent montage with zone names and radio, light and water type returning, breaking the surface at dusk next
+    to the ship; summary screen (max depth, species found, photos, events handled, time played) and scrolling credits.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -136,6 +149,8 @@
   26 m, seamount summit and flank with floods, cockpit with floods off; whale pass and CO2 flows driven headless.
 - M7: CO2 seep with white chimneys and droplets, lights-off bioluminescence, red emergency cockpit with breakers,
   black-smoker chimney in the floods, sediment plume; power failure and plume flows driven headless.
+- M8: abyssal plain with nodules and mounds, outcrop with glass sponges, cable snag; bait station with amphipods;
+  ECHO-7 with the bag on the trench floor; ascent montage, dusk surfacing, summary screen.
 
 ### Known issues / to revisit
 - Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
@@ -146,6 +161,6 @@
 - Marine snow density must be raised per deep zone.
 
 ### Next
-- M8: Abyssal plain (~4,600 m: sea pigs, tripod fish, dumbo octopus, glass sponges, brittle stars, grenadiers; arm
-  sample; cable entanglement), hadal trench (~7,000 m bait station with snailfish and amphipods; ~10,900 m floor
-  with xenophyophores, ECHO-7 and the plastic bag; drop-weight jam), ending ascent, summary and credits.
+- M9: settings screen (quality incl. auto, resolution scale, sensitivity, invert Y, FOV, volumes, subtitles, reduced
+  motion), title over a live underwater scene, loading screens with depth + fact between stages, music pads per
+  zone with discovery swells and event tension layer, quality auto-benchmark.

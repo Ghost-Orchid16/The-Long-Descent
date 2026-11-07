@@ -738,5 +738,201 @@
    "speaker": "TOPSIDE",
    "text": "You're out of it. Good flying. When you're ready, flood the ballast — next stop, the abyssal plain."
   }
+ ],
+ "abyssal.d4000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Four thousand metres: the abyss. Plains like the one below you cover roughly half of the planet's surface."
+  }
+ ],
+ "abyssal.arrive": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're over the abyssal plain, about four thousand six hundred metres. Soft sediment, built up over millions of years."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "We'd like a sample. There are manganese nodules all over the floor — pick one up with the arm."
+  }
+ ],
+ "abyssal.arm": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hold the right mouse button to drive the arm, aim at the nodule, and click to grab it."
+  }
+ ],
+ "abyssal.sample": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Got it, it's in the basket. Nodules like that grow a few millimetres every million years."
+  }
+ ],
+ "abyssal.south": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Head south across the plain. The trench starts beyond it."
+  }
+ ],
+ "abyssal.cable.snag": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You've stopped. What is that — an old cable, looped round your skid."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Don't fight it with the thrusters. Take it with the arm: grip it, then cut it or ease it off backwards."
+  }
+ ],
+ "abyssal.cable.grip": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You've got it. Cut it, or hold on and back away slowly."
+  }
+ ],
+ "abyssal.cable.cut": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Cut through. You're free. Lost and abandoned cable turns up even out here."
+  }
+ ],
+ "abyssal.cable.pull": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "It slid off the skid. You're free."
+  }
+ ],
+ "abyssal.next": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "When you're ready, flood the ballast. The trench is next — the long way down."
+  }
+ ],
+ "hadal.d6000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Six thousand metres. Below here is the hadal zone — the ocean trenches. The name comes from Hades."
+  }
+ ],
+ "hadal.arriveA": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Our bait station is on a terrace just below you. We dropped it yesterday. Let's see who came to dinner."
+  }
+ ],
+ "hadal.bait": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Look at them. Amphipods, thousands of them, and snailfish nosing through the crowd."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "The snailfish here are soft and nearly scaleless. They live deeper than almost any other fish."
+  }
+ ],
+ "hadal.d8000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Eight thousand metres. Fish have been filmed down to a little over eight thousand three hundred metres. Below that, none has ever been seen."
+  }
+ ],
+ "hadal.d9000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Nine thousand."
+  }
+ ],
+ "hadal.d10000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Ten thousand metres. More than a thousand atmospheres on the hull."
+  }
+ ],
+ "hadal.arriveB": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're on the floor of the Challenger Deep. ECHO-7's pinger is close. Sonar."
+  }
+ ],
+ "hadal.found": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "There it is."
+  }
+ ],
+ "hadal.bag": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "There's a plastic bag over its transducer."
+  }
+ ],
+ "hadal.echoTalks": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "…We're getting data. ECHO-7 is talking again."
+  }
+ ],
+ "hadal.home": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Let's bring you home. Drop your weights."
+  }
+ ],
+ "hadal.jam": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "One of the weights is hung up. Use the manual release — guard, arm, pump the hydraulics, then pull."
+  }
+ ],
+ "hadal.released": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Weights away. You're rising."
+  }
+ ],
+ "ending.d9000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "ECHO-7 is sending everything it recorded down there. Three weeks of data."
+  }
+ ],
+ "ending.d6000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Out of the trench."
+  }
+ ],
+ "ending.d4000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Four thousand. The abyss is below you now."
+  }
+ ],
+ "ending.d1000": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "A thousand metres. The light starts here."
+  }
+ ],
+ "ending.d200": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Blue's coming back."
+  }
+ ],
+ "ending.d40": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Almost home. We can see your strobe."
+  }
+ ],
+ "ending.surface": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Pod on the surface. Welcome back."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "You've been to the bottom of the ocean."
+  }
  ]
 }
