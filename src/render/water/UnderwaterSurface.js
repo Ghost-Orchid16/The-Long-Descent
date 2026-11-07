@@ -114,7 +114,7 @@ export class UnderwaterSurface {
 export class WaterBackdrop {
   constructor() {
     const shared = getSharedWaterUniforms();
-    this.uniforms = { ...shared, uFar: { value: 300 } };
+    this.uniforms = { ...shared, uFar: { value: 300 }, uGlow: { value: new THREE.Vector3(0, 0, 0) } };
     this.material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: /* glsl */ `
@@ -130,13 +130,15 @@ export class WaterBackdrop {
         ${WATER_UNIFORMS_GLSL}
         ${WATER_FUNCS_GLSL}
         uniform float uFar;
+        uniform vec3 uGlow;
         varying vec3 vDir;
         void main() {
           vec3 d = normalize(vDir);
           float dc = wDepth(cameraPosition);
           float r = uFar;
           if (d.y > 0.0) r = min(r, max(dc, 0.0) / d.y);
-          gl_FragColor = vec4(wInScatter(dc, d, r), 1.0);
+          // the last of the daylight in the twilight zone: a faint blue glow overhead
+          gl_FragColor = vec4(wInScatter(dc, d, r) + uGlow * pow(max(d.y * 0.5 + 0.5, 0.0), 3.0), 1.0);
         }
       `,
       side: THREE.BackSide,

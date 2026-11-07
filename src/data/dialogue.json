@@ -430,5 +430,85 @@
    "speaker": "TOPSIDE",
    "text": "In two days we take the pod down to ECHO-7."
   }
+ ],
+ "launch.intro": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Two days on. We're holding station over the Challenger Deep, eleven kilometres of water under the keel."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "The pod's in her cradle on the aft deck. Climb in and run the pre-dive checklist."
+  }
+ ],
+ "launch.inside": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Checklist's on the overhead panel, left to right: hatch seal, life support, CO₂ scrubber, ballast, comms."
+  }
+ ],
+ "launch.order": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hold on — keep to the checklist order."
+  }
+ ],
+ "launch.hatch": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hatch sealed."
+  }
+ ],
+ "launch.life": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Life support on. The sphere holds one atmosphere inside — surface pressure, all the way to the bottom."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's why you won't need any decompression from here on."
+  }
+ ],
+ "launch.scrubber": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Scrubber fan running. It pulls the carbon dioxide you breathe out of the cabin air."
+  }
+ ],
+ "launch.ballast": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Ballast armed. Those steel plates take you down, and dropping them brings you home."
+  }
+ ],
+ "launch.comms": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Comms check… loud and clear. Stand by for launch."
+  }
+ ],
+ "launch.lift": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Lifting. Swinging you out over the stern."
+  }
+ ],
+ "launch.water": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're in the water. Swimmers have the lift line off."
+  }
+ ],
+ "launch.flood": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Flood your ballast when you're ready. Hold E on the ballast switch."
+  }
+ ],
+ "launch.dive": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Going down. Next stop, the twilight zone."
+  }
  ]
 }
