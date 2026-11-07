@@ -12,6 +12,8 @@ import { nextFrame } from './Stage.js';
 import { Scanner } from './Scanner.js';
 import { PhotoMode } from './PhotoMode.js';
 import { Journal } from '../ui/SpeciesUI.js';
+import { music } from '../core/audio/Music.js';
+import facts from '../data/facts.json';
 import dialogue from '../data/dialogue.json';
 
 /** Top-level game: owns systems, runs the loop, and moves between stages. */
@@ -44,6 +46,7 @@ export class Game {
     this.updaters = new Set();
     this.dev = params.get('dev') === '1' || params.has('stage');
     window.__game = this;
+    bus.on('audio:ready', () => music.resume());
     bus.on('pointerunlock', () => { if (this.state === 'playing' && !this.modal && !this.ignoreUnlock) this.pause(); });
     this.frame = this.frame.bind(this);
     requestAnimationFrame(this.frame);
@@ -79,6 +82,9 @@ export class Game {
     const prev = this.stage;
     if (transition === 'fade') { await this.ui.fade(true, fadeTime); }
     this.state = 'loading';
+    music.tension(false);
+    const showLoading = transition === 'fade' && this.menus;
+    if (showLoading) this.menus.showLoadingScreen(facts[Math.floor(Math.random() * facts.length)], STAGE_META[index]);
     this.ui.clearRadio();
     this.ui.prompt(null);
     this.ui.setMarker(null);
@@ -109,11 +115,29 @@ export class Game {
     this.engine.update(0.016);
     await this.engine.warmup(this.engine.scene);
     if (STAGE_META[index].checkpoint) this.checkpoint(index);
+    music.setZone(STAGE_META[index].music);
+    if (showLoading) { this.menus.setLoading(1); this.menus.hideLoading(); }
     this.state = 'playing';
     this.loadingStage = false;
     if (transition === 'fade') this.ui.fade(false, fadeTime * 1.3);
     bus.emit('stage:enter', index);
     return st;
+  }
+
+  /** Load the live title backdrop (not a checkpointed stage). */
+  async loadTitle() {
+    const mod = await import('./stages/title.js');
+    const st = new mod.default(this);
+    await st.build(nextFrame);
+    this.collision.clear();
+    this.engine.scene.add(st.root);
+    this.stage = st;
+    this.stageIndex = -1;
+    st.enter();
+    this.engine.update(0.016);
+    await this.engine.warmup(this.engine.scene);
+    music.setZone('title');
+    this.state = 'title';
   }
 
   checkpoint(index) {

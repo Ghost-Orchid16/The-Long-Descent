@@ -13,7 +13,7 @@ export function interiorMaterial(params = {}, { glow = 0 } = {}) {
   const m = new THREE.MeshStandardMaterial({ roughness: 0.7, metalness: 0.1, ...params });
   m.onBeforeCompile = (sh) => { sh.fragmentShader = sh.fragmentShader.replace('#include <lights_fragment_begin>', _interiorChunk); };
   m.customProgramCacheKey = () => 'cockpitInterior';
-  m.envMapIntensity = 0.12;
+  m.envMapIntensity = 0.05;
   void glow;
   return m;
 }
@@ -44,7 +44,7 @@ function viewportGlass(r, halfAngle) {
   geo.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(V(0, 1, 0), POD.viewDir));
   const mat = new THREE.ShaderMaterial({
     transparent: true, depthWrite: false, side: THREE.DoubleSide,
-    uniforms: { uFog: { value: 0.35 }, uTime: { value: 0 }, uAxis: { value: POD.viewDir.clone() }, uHalf: { value: halfAngle }, uTint: { value: new THREE.Color(0.75, 0.85, 0.9) } },
+    uniforms: { uFog: { value: 0.35 }, uTime: { value: 0 }, uAxis: { value: POD.viewDir.clone() }, uHalf: { value: halfAngle }, uTint: { value: new THREE.Color(0.75, 0.85, 0.9) }, uLight: { value: 1 } },
     vertexShader: /* glsl */ `
       varying vec3 vP; varying vec3 vN; varying vec3 vV;
       void main() {
@@ -55,7 +55,7 @@ function viewportGlass(r, halfAngle) {
         gl_Position = projectionMatrix * viewMatrix * w;
       }`,
     fragmentShader: /* glsl */ `
-      uniform float uFog; uniform float uTime; uniform vec3 uAxis; uniform float uHalf; uniform vec3 uTint;
+      uniform float uFog; uniform float uTime; uniform vec3 uAxis; uniform float uHalf; uniform vec3 uTint; uniform float uLight;
       varying vec3 vP; varying vec3 vN; varying vec3 vV;
       float h(vec2 p) { return fract(sin(dot(p, vec2(41.3, 289.1))) * 43758.5453); }
       float n2(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -70,8 +70,9 @@ function viewportGlass(r, halfAngle) {
         float drops = step(0.93, n2(q * 4.0)) * smoothstep(0.6, 0.95, ang) * uFog;
         float fres = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 4.0);
         float scratch = smoothstep(0.985, 1.0, n2(vec2(q.x * 0.4, q.y * 9.0))) * 0.08;
-        vec3 col = uTint * (cond * 0.55 + drops * 0.3) + vec3(0.9, 0.95, 1.0) * (fres * 0.06 + scratch);
-        float a = clamp(cond * 0.5 + drops * 0.25 + fres * 0.08 + scratch + 0.015, 0.0, 0.85);
+        // condensation only shows where light reaches it (cabin lamp behind, floods outside)
+        vec3 col = (uTint * (cond * 0.55 + drops * 0.3) + vec3(0.9, 0.95, 1.0) * (fres * 0.06 + scratch)) * uLight;
+        float a = clamp((cond * 0.5 + drops * 0.25) * clamp(uLight * 1.5, 0.15, 1.0) + fres * 0.08 + scratch + 0.015, 0.0, 0.85);
         gl_FragColor = vec4(col, a);
       }`,
   });
@@ -149,8 +150,8 @@ export class Cockpit {
       const pivot = new THREE.Group(); pivot.add(lever); pivot.rotation.x = 0.5;
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), new THREE.MeshBasicMaterial({ color: 0x401010, toneMapped: false }));
       led.position.set(0, 0.012, 0.045);
-      const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.15, 0.035), new THREE.MeshBasicMaterial({ map: labelTexture(label, { size: 24 }), transparent: true, toneMapped: false }));
-      tag.rotation.x = -Math.PI / 2; tag.position.set(0, 0.012, -0.06);
+      const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.16, 0.04), new THREE.MeshBasicMaterial({ map: labelTexture(label, { w: 320, h: 80, size: 40 }), transparent: true, toneMapped: false }));
+      tag.rotation.x = -Math.PI / 2; tag.position.set(0, 0.012, -0.062);
       sw.add(base, pivot, led, tag);
       sw.position.set(-0.34 + i * 0.17, 0.0, 0.0);
       const holder = new THREE.Group(); holder.position.copy(over.position); holder.rotation.copy(over.rotation);

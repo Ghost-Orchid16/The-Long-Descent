@@ -237,6 +237,6 @@ export function buildReef(engine, { seed = 7, density = 1, area = null, heightMo
   }
 
   group.add(sc.build());
-  console.log('[reef] dressing', JSON.stringify(sc.stats));
+  if (import.meta.env?.DEV) console.log('[reef] dressing', JSON.stringify(sc.stats));
   return { group, hf, scatter: sc, reef: R, anemones, materials: M, kit: K };
 }

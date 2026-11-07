@@ -1,4 +1,5 @@
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 
 /**
  * CO2 scrubber alarm in the pod: the absorbent canister is spent, CO2 climbs and vision dims.
@@ -16,6 +17,7 @@ export class CO2Scrubber {
     const game = this.game, pod = this.pod, sc = pod.cockpit.scrubber;
     this.active = true;
     this.step = 'open';
+    bus.emit('tension', true);
     pod.sys.scrubberOn = false;
     pod.co2Rate = 60;
     pod.warn = 'CO₂ HIGH';
@@ -48,6 +50,7 @@ export class CO2Scrubber {
 
   _finish() {
     this.active = false; this.done = true; this.step = null;
+    bus.emit('tension', false);
     for (const it of this.items) this.game.interactions.remove(it);
     this.items.length = 0;
     this.game.save.stats.events.co2 = true;

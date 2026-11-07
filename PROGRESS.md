@@ -1,6 +1,6 @@
 # PROGRESS
 
-## Status: M5 complete. Next: M6 (pod cockpit, controls & systems, launch checklist, Twilight zone + CO2 scrubber).
+## Status: M10 complete — all milestones done. The game is playable start to finish (stages 0–10).
 
 ### Done
 - **M1 — Water look test scene**
@@ -86,6 +86,75 @@
     valves; out of the green for 9 s → tender stabilises it and some progress is lost), second O2 period, surfacing,
     "two days later" card into the pod launch.
 
+- **M6 — Pod, launch, Twilight zone**
+  - Pod exterior (`world/podModel.js`): titanium sphere with the viewport opening, frame and skids, syntactic foam,
+    thrusters, three floodlight booms, sample basket, drop weights, articulated manipulator arm.
+  - Cockpit (`player/Cockpit.js`): padded sphere interior, acrylic viewport (rim condensation, droplets, scratches,
+    Fresnel glint), console with three live canvas screens (navigation: depth, vertical speed, outside pressure in atm,
+    water temperature, heading tape; life support: O2, CO2 ppm, battery, cabin; sonar PPI), overhead checklist
+    switches with LEDs, CO2 scrubber unit with hinged cover/canisters/fan, breaker panel, hatch, seat, cabin lights
+    (compensated for outside eye adaptation). Interior materials ignore sun and sky.
+  - Pod controller (`player/Pod.js`): spool-up thrusters, momentum and drag, yaw, vertical thrust, collision with bump
+    feedback, free head look, floods (F), sonar ping (R) with terrain/target returns, 2-link IK arm (hold right mouse,
+    click to grip), battery/O2/CO2/cabin model, CO2 dims vision, hull creaks growing with depth, thruster audio,
+    ocean temperature profile.
+  - Launch stage: pod in the cradle, board from the deck, five-switch checklist in order (radio facts incl. the
+    one-atmosphere sphere), A-frame hoist / run aft / swing out / lower with pendulum sway, splash, bobbing on the
+    swell with the waterline across the viewport, flood the ballast to dive.
+  - Twilight stage: guided descent 25 → 330 m with the depth counter running, light fading, snow rushing past and
+    radio lines; seamount flank 355–640 m (basalt and ooze, black corals, gorgonians, sponges, boulders);
+    nautilus, hatchetfish, lanternfish school, siphonophore, comb jellies, vampire squid, sixgill; faint overhead glow;
+    sperm whale heard clicking (positional clicks, then creaks) before it crosses in front of the pod;
+    CO2 scrubber alarm (open panel, pull canister, insert spare, restart fan); ballast flood to continue.
+
+- **M7 — Midnight zone**
+  - Guided descent 640 → 1,560 m with a brief giant squid crossing the floods at ~900 m and radio facts.
+  - Area A (~1,600 m): volcano flank with a sediment basin, small white chimneys and a liquid-CO2 seep (milky droplets
+    rising in wavering columns, after the NW Eifuku "Champagne" vent), vent mussel beds, anglerfish, fangtooth,
+    loosejaw, gulper eel, Atolla jellyfish. Lights-off moment: floods off for 20 s while bioluminescent sparks
+    (spontaneous and wake-triggered flashes) and the Atolla's "burglar alarm" display play out.
+  - Second descent to 3,560 m with the power failure at ~2,400 m: floods, screens, cabin lights and thrusters die,
+    red emergency light, breaker panel restored in order (life support → lights → thrusters; wrong order trips back);
+    the pod now models separate power buses.
+  - Area B (~3,600 m): sulphide mound with flanged black-smoker chimneys and smoke plumes lit by the floods, vent shrimp
+    swarming the chimney walls, vent crabs at the bases, hairy snails near the orifices. Sediment plume: visibility
+    near zero (plume water type, milky flood backscatter, short scanner range), sonar pings reveal terrain and the exit
+    waypoint box; reach it to clear the water. Ballast flood continues to the abyssal plain.
+  - Viewport glass condensation now depends on the light reaching it (no glow in total darkness).
+
+- **M8 — Abyssal, Hadal, Ending**
+  - Abyssal plain (~4,600 m): ooze plain with manganese nodules, burrow mounds and boulders, a basalt outcrop with
+    glass sponges; sea pig herd, perched tripod fish, dumbo octopus, brittle stars, grenadiers, sea cucumbers. Arm
+    sample (grip a nodule, stowed in the basket). Cable entanglement: an abandoned cable loop snags the skid — grip it
+    with the arm, then cut (hold click) or pull free (hold click + S); the loop drops back to the sediment.
+  - Hadal trench: ~7,000 m terrace with the expedition's baited camera lander swarmed by amphipods and snailfish;
+    guided descent past 8,000 / 9,000 / 10,000 m; the Challenger Deep floor (~10,900 m) between steep walls with
+    xenophyophores and amphipods. ECHO-7 lies tipped in the ooze with a plastic bag over its transducer (quiet, no
+    lecture); pull the bag off with the arm (it comes home in the basket) and ECHO-7's beacon starts talking again.
+    Drop-weight jam: manual release (lift guard, arm, pump the hydraulics ×5, pull the T-handle) while the hull creaks.
+  - Ending: ascent montage with zone names and radio, light and water type returning, breaking the surface at dusk next
+    to the ship; summary screen (max depth, species found, photos, events handled, time played) and scrolling credits.
+
+- **M9 — Audio, menus, settings, loading, benchmark**
+  - Procedural score (`core/audio/Music.js`): detuned pad chords per zone with filter LFOs and slow crossfades,
+    glassy bells in the deep zones, a bell-arpeggio swell on every new species, a tension layer (pulse + dissonant
+    cluster) during all events, distant humpback-like whale song on the wall and the ascent, radio squelch.
+  - Title over a live reef scene (cleaning station, manta circling, chromis, turtle) with a slow camera orbit.
+  - First-launch auto-quality benchmark (median frame time → low / medium / high), stored in settings.
+  - Settings screen (title and pause): quality incl. auto, resolution scale, FOV, mouse sensitivity, invert Y,
+    master/music/SFX volume, subtitles, reduced motion, objective markers; live where possible.
+  - Loading screen between stages with the area name, depth range, progress and a real ocean fact.
+  - New dive keeps the field journal and photos; continue resumes at the last checkpoint.
+
+- **M10 — QA, hygiene, deploy**
+  - Console sweep of every stage (dev server and production preview): no warnings or errors; development logs only
+    in dev builds (`scripts/consolecheck.cjs`).
+  - Chained transition test 0 → 10: every stage builds, enters and disposes cleanly; GPU geometry counts return to
+    baseline after each stage (no leaks across zones).
+  - Optional per-species glTF overrides (`public/models/manifest.json`, see ASSETS.md).
+  - `vercel.json`, `netlify.toml`, README (run, controls, build, deploy), ASSETS.md, CREDITS.md.
+  - Production build: static `dist/` of about 2.3 MB with relative paths.
+
 ### Verified screenshots (headless SwiftShader)
 - 3–5 m sand with caustics, 8 m Snell's window, 16 m reef slope, 40 m sea fan with/without torch
   (torch reveals red), 316 m torch-lit reef.
@@ -96,15 +165,22 @@
   free-flow bubble wall and H-valve overlay; shark display and free-flow flows driven headless with `?sim=`.
 - M5: 12 m stop with stop gauge and Snell's window, hang tank swap, deck with surface-interval timer, chamber
   interior (mask, panel, gauge, valves); pressure-fault dynamics verified with a scripted controller.
+- M6: pod on deck in its cradle, cockpit with screens and viewport, overhead switches, A-frame lift, guided descent at
+  26 m, seamount summit and flank with floods, cockpit with floods off; whale pass and CO2 flows driven headless.
+- M7: CO2 seep with white chimneys and droplets, lights-off bioluminescence, red emergency cockpit with breakers,
+  black-smoker chimney in the floods, sediment plume; power failure and plume flows driven headless.
+- M8: abyssal plain with nodules and mounds, outcrop with glass sponges, cable snag; bait station with amphipods;
+  ECHO-7 with the bag on the trench floor; ascent montage, dusk surfacing, summary screen.
+- M9: title over the live reef, settings screen.
 
 ### Known issues / to revisit
-- Ship model needs a detailing pass (rounded members, rails, fittings, superstructure detail) — planned with M5/M6.
-- Stages 2–10 are temporary dev stubs until their milestones.
-- Reef colonies still read somewhat CG up close.
-- Some deep-zone creature models are simple silhouettes; refine when their zones are built (M6–M8).
-- Table-coral outlines are polygonal from below.
-- Marine snow density must be raised per deep zone.
+- Frame rate on the target hardware (Iris Xe at 1080p, medium) has not been measured here: all testing ran on
+  headless software rendering. The first-launch benchmark picks low / medium / high from measured frame times.
+- Some deep-zone creature models are simple silhouettes; the reef colonies and the research vessel could use a
+  further detailing pass.
+- The radio is subtitles with a squelch; there is no recorded voice.
+- Gamepad mapping is implemented but untested on physical controllers.
+- Decompression, depth and time are compressed for play and are not dive guidance.
 
 ### Next
-- M6: Pod (thrusters with spool-up, ballast, floodlights, sonar, manipulator arm), cockpit with diegetic instruments
-  and acrylic viewport, launch from the A-frame with the pre-dive checklist, Twilight zone + CO2 scrubber event.
+- Measure and tune performance on integrated GPUs; refine models flagged above.

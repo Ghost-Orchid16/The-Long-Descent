@@ -26,7 +26,13 @@ export const WATER_TYPES = {
   },
   // Deep ocean seen with lamps only: low scatter, the lamps reach ~15–20 m.
   deep: {
-    kd: [0.42, 0.064, 0.026], sigma: [0.32, 0.075, 0.060], scatter: [0.010, 0.018, 0.026],
+    kd: [0.42, 0.064, 0.026], sigma: [0.30, 0.07, 0.055], scatter: [0.0045, 0.008, 0.012],
+    inScatterGain: 1.0, caustics: 0.0, causticScale: 6.0, godrays: 0.0, surge: 0.0,
+    lightPath: 0.55,
+  },
+  // Sediment plume: resuspended silt, visibility of a metre or two in the floods.
+  plume: {
+    kd: [0.42, 0.064, 0.026], sigma: [1.1, 1.0, 0.95], scatter: [0.085, 0.078, 0.07],
     inScatterGain: 1.0, caustics: 0.0, causticScale: 6.0, godrays: 0.0, surge: 0.0,
     lightPath: 0.55,
   },

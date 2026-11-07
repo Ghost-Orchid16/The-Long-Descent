@@ -5,6 +5,7 @@ import { buildChamberInterior } from '../../world/chamberInterior.js';
 import { SHIP } from '../../world/ship.js';
 import { Walker } from '../../player/Walker.js';
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 import { SURFACE_INTERVAL } from './s3_ascent.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -172,6 +173,7 @@ export default class ChamberStage extends Stage {
     const game = this.game;
     this.phase = 'fault'; this.pt = 0;
     this.flags.fault = true;
+    bus.emit('tension', true);
     this.hold = 0; this.out = 0; this.drift = -0.35; this.surge = 0;
     audio.playAlarm('warn', 0.7);
     game.say('chamber.fault', { interrupt: true });
@@ -199,6 +201,7 @@ export default class ChamberStage extends Stage {
     if (this.hold >= FAULT_HOLD) {
       this.phase = 'o2b'; this.pt = 0; this.depth = STOP_DEPTH;
       game.save.stats.events.chamber = true;
+      bus.emit('tension', false);
       audio.play('chime', { gain: 0.4, bus: 'ui' });
       game.say('chamber.faultFix', { interrupt: true });
       this._objectives();

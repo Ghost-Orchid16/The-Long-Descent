@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { audio } from '../../core/audio/AudioEngine.js';
+import { bus } from '../../core/Bus.js';
 
 const _d = new THREE.Vector3(), _f = new THREE.Vector3(), _t = new THREE.Vector3(), _s = new THREE.Vector3(), _c = new THREE.Vector3();
 
@@ -30,6 +31,7 @@ export class SharkDisplay {
     if (this.phase !== 'idle') return;
     this.diver = diver;
     this.phase = 'approach';
+    bus.emit('tension', true);
     this.t = 0;
     const a = this.shark, g = this.g;
     g.visible = true;
@@ -130,6 +132,7 @@ export class SharkDisplay {
 
   _leave(clean) {
     this.phase = 'leave'; this.t = 0; this.clean = clean;
+    bus.emit('tension', false);
     this.g.o.display = 0;
     this.o.onCalm?.(clean);
   }

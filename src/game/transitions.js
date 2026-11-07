@@ -15,8 +15,10 @@ export function guidedDescent(stage, { from, to, duration = 40, zone = '', hide 
   const cues = lines.map((l) => ({ ...l, done: false }));
   return {
     active: true,
+    paused: false,
     update(dt) {
       if (!this.active) return true;
+      if (this.paused) { env.current.set(saved.x, 0, saved.z); return false; }
       t += dt;
       const k = THREE.MathUtils.clamp(t / duration, 0, 1);
       const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;

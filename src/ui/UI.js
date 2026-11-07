@@ -137,6 +137,7 @@ export class UI {
       l.shown = 0;
       this.radioT = 0;
       this.radioEl.innerHTML = `<span class="who">${l.speaker}</span><span class="txt"></span><span class="skip">Enter to skip</span>`;
+      this.radioEl.classList.toggle('nosub', !settings.get('subtitles'));
       this.radioTxt = this.radioEl.querySelector('.txt');
       this.radioEl.classList.add('show');
       bus.emit('radio:start', l);

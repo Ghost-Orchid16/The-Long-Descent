@@ -4,6 +4,7 @@ import { makeCreatureMaterial } from './CreatureMaterial.js';
 import { buildBody, PART } from './geometry/body.js';
 import * as S from './geometry/special.js';
 import speciesData from '../data/species.json';
+import { overrideFor } from './overrides.js';
 
 export const SPECIES = Object.fromEntries(speciesData.map((s) => [s.id, s]));
 export const SPECIES_LIST = speciesData;
@@ -65,7 +66,8 @@ export function buildCreature(id) {
 
 /** InstancedMesh for a species with the per-instance animation attribute (phase, speed, turn, state). */
 export function makeInstanced(id, count) {
-  const c = buildCreature(id);
+  const ov = overrideFor(id);
+  const c = ov ? { geometry: ov.geometry.clone(), material: ov.material.clone(), length: modelLength(id), appearance: APPEARANCE[id], data: SPECIES[id] } : buildCreature(id);
   const anim = new THREE.InstancedBufferAttribute(new Float32Array(count * 4), 4);
   anim.setUsage(THREE.DynamicDrawUsage);
   for (let i = 0; i < count; i++) { anim.array[i * 4] = Math.random() * 100; anim.array[i * 4 + 1] = 1; }
