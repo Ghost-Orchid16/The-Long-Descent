@@ -1,0 +1,514 @@
+{
+ "prologue.intro": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Morning. Welcome aboard the Tåsi. We're moored over the reef on Guam's west coast."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Quick brief. Three weeks ago our trench lander, ECHO-7, stopped transmitting from the bottom of the Mariana Trench."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "This expedition surveys every zone on the way back down to it. Today you start at the top: the reef, and the wall below it."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Your gear's on the bench, starboard side. Run your checks."
+  }
+ ],
+ "prologue.gauge": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Two hundred bar. A full cylinder."
+  }
+ ],
+ "prologue.purge": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Regulator breathes clean. You've got two second stages on that H-valve — the yellow one is your backup."
+  }
+ ],
+ "prologue.bcdIn": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Jacket holds air. Now dump it."
+  }
+ ],
+ "prologue.bcdOut": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Good. Inflates and deflates."
+  }
+ ],
+ "prologue.mask": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Mask on. Head to the dive platform on the starboard quarter."
+  }
+ ],
+ "prologue.platform": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Sit on the edge, one hand on your mask, and roll back when you're ready."
+  }
+ ],
+ "prologue.entry": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Diver in the water. Take a moment."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "When you're ready, head down to the reef. Watch your ascent rate on the wrist computer."
+  }
+ ],
+ "reef.shrimp": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hear that crackle? Snapping shrimp. Each snap is a collapsing bubble from a single claw. It's the sound of a healthy reef."
+  }
+ ],
+ "reef.scanTutorial": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hold your view on an animal to identify it. Press E to scan it into your field journal."
+  }
+ ],
+ "reef.journal": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Logged. Press J any time to open the journal."
+  }
+ ],
+ "reef.colour": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Notice the colours fading as you go deeper? Water absorbs red light first. Your torch is on F — it brings the colour back up close."
+  }
+ ],
+ "reef.cleaning": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That coral head is a cleaning station. Mantas come in to have parasites picked off by small cleaner wrasse. Stay low and keep still."
+  }
+ ],
+ "reef.manta": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Manta on the station. Don't chase it. Let it come to you."
+  }
+ ],
+ "reef.ghostnet.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You've stopped moving. Talk to me — are you snagged?"
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's monofilament round your fins. Don't thrash, it tightens. Hold E for your knife and cut the strands."
+  }
+ ],
+ "reef.ghostnet.panic": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Easy. Slow your breathing. Knife, then cut."
+  }
+ ],
+ "reef.ghostnet.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're clear. That was ghost gear — lost or dumped fishing line that keeps catching animals long after it's abandoned."
+  }
+ ],
+ "reef.toWall": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Nice work. Follow the slope south to the drop-off. The wall and the wreck are below it."
+  }
+ ],
+ "reef.lowNdl": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Keep an eye on your no-decompression time. We've planned stops for the deep part, but don't burn it here."
+  }
+ ],
+ "diver.fastAscent": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Slow your ascent. Nine metres a minute or less."
+  }
+ ],
+ "diver.lowAir": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Your gas is getting low. Start thinking about the way up."
+  }
+ ],
+ "diver.outOfAir": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're out of gas! Stay calm — switching you to the safety diver's alternate. We'll bring you back to the line."
+  }
+ ],
+ "wall.arrive": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's the drop-off. The wall falls away past a hundred metres."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "The freighter sits on a ledge at about fifty. Take your time going down, and watch your gas."
+  }
+ ],
+ "wall.narcosis": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Feeling a little fuzzy? That's nitrogen narcosis. Breathing air this deep has a mild narcotic effect, a bit like a drink or two."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "It clears as soon as you come shallower. Move slowly and check your gauges twice."
+  }
+ ],
+ "wall.fan": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Big sea fan on the wall. At this depth the reds are gone — put your torch on it."
+  }
+ ],
+ "wall.fanLit": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "There it is. That fan was red the whole time. The water takes the red light out before it ever reaches you."
+  }
+ ],
+ "wall.shark.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Shark coming in from the blue. Grey reef. Stop swimming and watch it."
+  }
+ ],
+ "wall.shark.display": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "It's hunching — back arched, pectoral fins down, swimming stiff and exaggerated. That's a threat display."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Face it, stay calm, and back slowly toward the wall. Don't swim at it and don't sprint."
+  }
+ ],
+ "wall.shark.escalate": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Easy! Slow down. Face it and back off toward the wall."
+  }
+ ],
+ "wall.shark.escalate2": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "It's still agitated. Stop finning. Just face it and drift back."
+  }
+ ],
+ "wall.shark.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "It's moving off. That display is a warning — grey reefs use it when they feel crowded or cornered."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "You gave it room and it lost interest. Textbook."
+  }
+ ],
+ "wall.shark.doneRough": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "It's gone. That was too close. When a grey reef hunches like that, it wants space: stop, face it, and back away slowly."
+  }
+ ],
+ "wall.wreck": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's the freighter. She went down in a typhoon decades ago with nobody aboard."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Our acoustic recorder is clamped to the forward mast. Hold E to unclip it."
+  }
+ ],
+ "wall.recorder": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Got it. That recorder has been listening down here since the spring."
+  }
+ ],
+ "wall.clue": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Read me the screen... twelve kilohertz, every two seconds, last heard two hours ago."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's ECHO-7's emergency pinger. It still has power. Something down there is just stopping it from talking."
+  }
+ ],
+ "wall.freeflow.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Free-flow! Your primary is dumping gas. Switch to your backup — the yellow one on your chest."
+  }
+ ],
+ "wall.freeflow.valve": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Good, you're breathing. Now reach back and close the left valve to stop the leak."
+  }
+ ],
+ "wall.freeflow.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Leak's stopped and you're on the backup. That cost you gas, though."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Start your ascent. The line runs up from the bow. We'll run your stops on the way."
+  }
+ ],
+ "wall.lowGas": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Watch your gas. Head for the line at the bow and start up."
+  }
+ ],
+ "ascent.start": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "On the line. Up you come — nine metres a minute, no faster. First stop is at twelve."
+  }
+ ],
+ "ascent.stop12": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Twelve metres. Hold here. Keep inside the band on your gauge — the current will try to move you."
+  }
+ ],
+ "ascent.stop9": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Nine metres. Same again. The timer only runs while you're in the band."
+  }
+ ],
+ "ascent.stop6": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Six metres. The crew hung a spare cylinder on the line here — switch onto it, you'll want the gas."
+  }
+ ],
+ "ascent.next": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Good. Up to the next stop, slowly."
+  }
+ ],
+ "ascent.slow": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Slow down! Nine metres a minute. That adds time to your next stop."
+  }
+ ],
+ "ascent.shallow": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're above the stop — drop back down into the band."
+  }
+ ],
+ "ascent.line": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Stay with the line. The current is stronger away from it."
+  }
+ ],
+ "ascent.hangTank": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's a full cylinder. Breathe easy."
+  }
+ ],
+ "ascent.lowAir": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're low on gas. There's a hang tank at six metres."
+  }
+ ],
+ "ascent.surfaceDeco": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's your in-water stops. We'll finish your decompression in the deck chamber — surface decompression."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Come straight up and get in the chamber. You have five minutes from leaving the stop."
+  }
+ ],
+ "chamber.deck": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Ladder's right here. Gear off on the move — straight to the chamber."
+  }
+ ],
+ "chamber.hurry": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Two minutes left. Keep moving."
+  }
+ ],
+ "chamber.late": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's over five minutes. We'll switch you to the longer treatment table. Get in."
+  }
+ ],
+ "chamber.in": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're in. Door's sealed. Blowing you down to fifty feet — fifteen metres. Clear your ears as we go."
+  }
+ ],
+ "chamber.o2": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "At depth. Mask on — first oxygen period. Breathe normally."
+  }
+ ],
+ "chamber.air": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Mask off. Five minutes on air — that air break keeps oxygen from building up too fast."
+  }
+ ],
+ "chamber.fault": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Pressure's wandering — the exhaust valve is sticking. Use your inside valves: supply raises pressure, exhaust lowers it."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "Keep the needle in the green until I can swap the valve."
+  }
+ ],
+ "chamber.faultFix": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Got it, valve swapped. Nice and steady. Second oxygen period — mask back on."
+  }
+ ],
+ "chamber.faultSlip": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Out of the green! Bring it back — little movements on the valves."
+  }
+ ],
+ "chamber.faultReset": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "I've got it, I'm holding it from out here. Let's try that again — take the valves when you're ready."
+  }
+ ],
+ "chamber.surface": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Oxygen done. Bringing you up to the surface now."
+  }
+ ],
+ "chamber.done": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're clear. That's the diving phase done. Get some rest."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "In two days we take the pod down to ECHO-7."
+  }
+ ],
+ "launch.intro": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Two days on. We're holding station over the Challenger Deep, eleven kilometres of water under the keel."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "The pod's in her cradle on the aft deck. Climb in and run the pre-dive checklist."
+  }
+ ],
+ "launch.inside": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Checklist's on the overhead panel, left to right: hatch seal, life support, CO₂ scrubber, ballast, comms."
+  }
+ ],
+ "launch.order": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hold on — keep to the checklist order."
+  }
+ ],
+ "launch.hatch": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Hatch sealed."
+  }
+ ],
+ "launch.life": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Life support on. The sphere holds one atmosphere inside — surface pressure, all the way to the bottom."
+  },
+  {
+   "speaker": "TOPSIDE",
+   "text": "That's why you won't need any decompression from here on."
+  }
+ ],
+ "launch.scrubber": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Scrubber fan running. It pulls the carbon dioxide you breathe out of the cabin air."
+  }
+ ],
+ "launch.ballast": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Ballast armed. Those steel plates take you down, and dropping them brings you home."
+  }
+ ],
+ "launch.comms": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Comms check… loud and clear. Stand by for launch."
+  }
+ ],
+ "launch.lift": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Lifting. Swinging you out over the stern."
+  }
+ ],
+ "launch.water": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "You're in the water. Swimmers have the lift line off."
+  }
+ ],
+ "launch.flood": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Flood your ballast when you're ready. Hold E on the ballast switch."
+  }
+ ],
+ "launch.dive": [
+  {
+   "speaker": "TOPSIDE",
+   "text": "Going down. Next stop, the twilight zone."
+  }
+ ]
+}

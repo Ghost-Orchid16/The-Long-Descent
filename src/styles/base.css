@@ -1,0 +1,29 @@
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+
+:root {
+  --ink: #e8f1f5;
+  --ink-dim: rgba(232, 241, 245, 0.62);
+  --ink-faint: rgba(232, 241, 245, 0.32);
+  --line: rgba(232, 241, 245, 0.18);
+  --panel: rgba(6, 16, 22, 0.56);
+  --panel-strong: rgba(4, 11, 16, 0.86);
+  --accent: #8fc4d8;
+  --warn: #e8b24a;
+  --alert: #e5603f;
+  --ok: #7fc8a0;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
+  background: #000; color: var(--ink); font-family: var(--font);
+  -webkit-font-smoothing: antialiased; user-select: none; -webkit-user-select: none;
+}
+#app { position: fixed; inset: 0; }
+#app canvas { display: block; outline: none; }
+#ui { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+#ui .interactive, #ui button, #ui input, #ui select { pointer-events: auto; }

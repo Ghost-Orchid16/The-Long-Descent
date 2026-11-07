@@ -1,0 +1,140 @@
+/* ---------- shared ---------- */
+.hud-layer { position: absolute; inset: 0; pointer-events: none; transition: opacity 0.6s ease; }
+.hud-layer.hidden { opacity: 0; }
+.tabnum { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+.smallcaps { text-transform: uppercase; letter-spacing: 0.14em; font-size: 10px; font-weight: 500; }
+
+/* ---------- reticle ---------- */
+.reticle { position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%;
+  background: rgba(232, 241, 245, 0.75); box-shadow: 0 0 4px rgba(0, 0, 0, 0.6); transition: all 0.18s ease; }
+.reticle.target { width: 22px; height: 22px; margin: -11px 0 0 -11px; background: transparent; border: 1px solid rgba(232, 241, 245, 0.8); }
+.reticle.hidden { opacity: 0; }
+
+/* ---------- prompt ---------- */
+.prompt { position: absolute; left: 50%; top: calc(50% + 34px); transform: translateX(-50%); font-size: 13px; color: var(--ink);
+  letter-spacing: 0.02em; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); opacity: 0; transition: opacity 0.2s; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+.prompt.show { opacity: 1; }
+.prompt .ring { width: 16px; height: 16px; }
+.prompt .ring circle { fill: none; stroke: var(--ink); stroke-width: 2; transform: rotate(-90deg); transform-origin: 50% 50%; }
+
+/* ---------- radio subtitles ---------- */
+.radio { position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(760px, 86vw); text-align: center;
+  font-size: 16px; line-height: 1.45; color: var(--ink); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9); transition: opacity 0.4s; opacity: 0; }
+.radio.show { opacity: 1; }
+.radio .who { display: block; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; font-weight: 600; }
+.radio .txt { font-weight: 400; }
+.radio .skip { display: block; font-size: 10px; color: var(--ink-faint); margin-top: 6px; letter-spacing: 0.08em; }
+
+/* ---------- objectives ---------- */
+.objectives { position: absolute; left: 20px; top: 18px; max-width: 360px; font-size: 13px; color: var(--ink); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  padding: 10px 16px 10px 12px; background: radial-gradient(ellipse at 0% 0%, rgba(2, 8, 12, 0.55), rgba(2, 8, 12, 0) 75%); }
+.objectives:empty { display: none; }
+.objectives .stage { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+.objectives .obj { display: flex; gap: 9px; align-items: baseline; margin: 5px 0; transition: opacity 0.6s, transform 0.6s; }
+.objectives .obj::before { content: ''; flex: 0 0 7px; height: 7px; border: 1px solid var(--ink-dim); transform: rotate(45deg) translateY(-1px); }
+.objectives .obj.done { opacity: 0.45; }
+.objectives .obj.done::before { background: var(--ink-dim); }
+.objectives .obj .sub { color: var(--ink-dim); font-size: 12px; margin-left: 4px; }
+
+/* ---------- toasts ---------- */
+.toasts { position: absolute; right: 28px; top: 26px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.toast { background: var(--panel); border: 1px solid var(--line); padding: 9px 14px; font-size: 12px; color: var(--ink); backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); opacity: 0; transform: translateX(12px); transition: all 0.5s ease; max-width: 320px; }
+.toast.show { opacity: 1; transform: none; }
+.toast .k { display: block; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+
+/* ---------- wrist dive computer ---------- */
+.wrist { position: absolute; left: 34px; bottom: 30px; width: 214px; padding: 12px 14px 11px; border-radius: 22px;
+  background: linear-gradient(160deg, rgba(10, 18, 22, 0.88), rgba(2, 6, 9, 0.92)); border: 1px solid rgba(160, 190, 200, 0.22);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.55), inset 0 0 0 3px rgba(0, 0, 0, 0.5);
+  transform: perspective(600px) rotateX(18deg) rotateZ(-4deg); transform-origin: left bottom; color: #d6ecf2; }
+.wrist .row { display: flex; justify-content: space-between; align-items: flex-end; }
+.wrist .lbl { font-size: 8.5px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(214, 236, 242, 0.5); }
+.wrist .big { font-size: 38px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; }
+.wrist .big small { font-size: 13px; font-weight: 400; margin-left: 2px; color: rgba(214, 236, 242, 0.6); }
+.wrist .med { font-size: 17px; font-weight: 400; line-height: 1.05; }
+.wrist .sep { height: 1px; background: rgba(214, 236, 242, 0.14); margin: 8px 0 7px; }
+.wrist .deco { color: var(--warn); }
+.wrist .alarm { color: var(--alert); animation: blink 0.6s steps(2) infinite; }
+.wrist .asc { display: flex; flex-direction: column-reverse; gap: 2px; width: 8px; height: 44px; }
+.wrist .asc i { flex: 1; background: rgba(214, 236, 242, 0.12); border-radius: 1px; }
+.wrist .asc i.on { background: rgba(127, 200, 160, 0.9); }
+.wrist .asc i.on.w { background: var(--warn); }
+.wrist .asc i.on.a { background: var(--alert); }
+@keyframes blink { 50% { opacity: 0.2; } }
+
+.air { position: absolute; left: 34px; bottom: 182px; width: 200px; transform: perspective(600px) rotateX(18deg) rotateZ(-4deg); transform-origin: left bottom; }
+.air .bar { height: 3px; background: rgba(232, 241, 245, 0.16); margin-top: 5px; }
+.air .fill { height: 100%; background: rgba(232, 241, 245, 0.8); transition: width 0.3s, background 0.3s; }
+.air .fill.low { background: var(--warn); }
+.air .fill.crit { background: var(--alert); }
+.air .t { font-size: 11px; color: var(--ink); display: flex; justify-content: space-between; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+.compass { position: absolute; left: 50%; top: 18px; width: 380px; height: 30px; margin-left: -190px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); }
+.compass .strip { position: absolute; top: 0; height: 30px; white-space: nowrap; }
+.compass .tick { position: absolute; top: 2px; width: 1px; height: 6px; background: rgba(232, 241, 245, 0.45); }
+.compass .tick.major { height: 10px; background: rgba(232, 241, 245, 0.8); }
+.compass .card { position: absolute; top: 13px; font-size: 11px; transform: translateX(-50%); color: var(--ink); text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+.compass .center { position: absolute; left: 50%; top: 0; width: 1px; height: 30px; background: var(--accent); opacity: 0.6; }
+.compass .marker { position: absolute; top: 0; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid var(--warn); transform: translateX(-5px); }
+
+/* ---------- world marker ---------- */
+.wmarker { position: absolute; transform: translate(-50%, -50%); font-size: 10px; color: var(--ink); text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  display: flex; flex-direction: column; align-items: center; gap: 3px; opacity: 0.85; transition: opacity 0.3s; letter-spacing: 0.06em; }
+.wmarker::before { content: ''; width: 9px; height: 9px; border: 1px solid var(--warn); transform: rotate(45deg); }
+.wmarker.hidden { opacity: 0; }
+
+/* ---------- fade ---------- */
+.fade { position: absolute; inset: 0; background: #000; opacity: 0; transition: opacity 1s ease; pointer-events: none; }
+.fade.on { opacity: 1; }
+.card-title { position: absolute; left: 0; right: 0; top: 42%; text-align: center; opacity: 0; transition: opacity 1.4s ease; pointer-events: none; }
+.card-title.show { opacity: 1; }
+.card-title .l1 { font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--ink-dim); }
+.card-title .l2 { font-size: 30px; font-weight: 300; margin-top: 10px; letter-spacing: 0.02em; }
+.card-title .l3 { font-size: 12px; color: var(--ink-dim); margin-top: 10px; letter-spacing: 0.08em; }
+
+/* ---------- depth readout during transitions ---------- */
+.transit { position: absolute; right: 40px; bottom: 40px; text-align: right; opacity: 0; transition: opacity 0.8s; }
+.transit.show { opacity: 1; }
+.transit .d { font-size: 46px; font-weight: 200; letter-spacing: -0.02em; }
+.transit .d small { font-size: 16px; margin-left: 4px; color: var(--ink-dim); }
+.transit .z { font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-dim); }
+
+/* ---------- close-up inspect card (gauge etc.) ---------- */
+.inspect { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.96); opacity: 0; transition: all 0.35s ease; pointer-events: none; }
+.inspect.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.inspect.high { top: 33%; }
+.inspect svg { display: block; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6)); }
+.inspect .cap { text-align: center; margin-top: 14px; font-size: 13px; color: var(--ink); text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+@media (max-width: 720px) {
+  .wrist { transform: scale(0.8); transform-origin: left bottom; left: 10px; bottom: 10px; }
+  .air { display: none; }
+  .compass { width: 260px; margin-left: -130px; }
+  .objectives { left: 12px; top: 12px; font-size: 12px; max-width: 60vw; }
+}
+
+/* ---------- deco stop gauge ---------- */
+.stopgauge { position: absolute; right: 42px; top: 50%; transform: translateY(-50%); width: 96px; text-align: center; transition: opacity 0.5s; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.stopgauge.hidden { opacity: 0; }
+.stopgauge .lbl { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-dim); }
+.stopgauge .dep { font-size: 22px; font-weight: 300; margin: 2px 0 8px; }
+.stopgauge .ruler { position: relative; width: 14px; height: 170px; margin: 0 auto; border: 1px solid var(--line); background: rgba(2, 8, 12, 0.35); }
+.stopgauge .band { position: absolute; left: -1px; right: -1px; top: 33.3%; height: 33.3%; background: rgba(127, 200, 160, 0.22); border-top: 1px solid var(--ok); border-bottom: 1px solid var(--ok); }
+.stopgauge .tick { position: absolute; left: -6px; right: -6px; top: 50%; height: 1px; background: var(--ink-faint); }
+.stopgauge .me { position: absolute; left: -9px; width: 30px; height: 2px; margin-top: -1px; background: var(--warn); box-shadow: 0 0 6px rgba(232, 178, 74, 0.6); transition: top 0.1s linear; }
+.stopgauge.in .me { background: var(--ok); box-shadow: 0 0 6px rgba(127, 200, 160, 0.7); }
+.stopgauge .ring { width: 44px; height: 44px; margin-top: 12px; transform: rotate(-90deg); }
+.stopgauge .ring circle { fill: none; stroke-width: 3; }
+.stopgauge .ring .bg { stroke: rgba(232, 241, 245, 0.15); }
+.stopgauge .ring .fg { stroke: var(--ok); }
+.stopgauge .rem { font-size: 13px; margin-top: -32px; height: 20px; }
+.stopgauge .hint { margin-top: 18px; font-size: 11px; color: var(--warn); min-height: 30px; }
+/* ---------- surface interval timer ---------- */
+.sitimer { position: absolute; left: 50%; top: 64px; transform: translateX(-50%); text-align: center; padding: 8px 18px; background: var(--panel); border: 1px solid var(--line); transition: opacity 0.5s; }
+.sitimer.hidden { opacity: 0; }
+.sitimer .lbl { font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+.sitimer .t { font-size: 28px; font-weight: 300; letter-spacing: 0.02em; }
+.sitimer.warn .t { color: var(--warn); }
+.sitimer .sub { font-size: 11px; color: var(--ink-dim); }
